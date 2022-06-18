@@ -176,7 +176,7 @@ const EditPackage = () => {
             <h5 className="title is-5">Back</h5>
           </div>
 
-          <p className="title is-3 header">Choose a document to edit: </p>
+          <p className="title is-3 header">Select document: </p>
           <div className="content-wrapper-1">
             <div className="cards-grid-1 container">
               {isLoading ? (
