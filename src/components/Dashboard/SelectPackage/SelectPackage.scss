@@ -1,0 +1,100 @@
+.SelectPackage{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    text-align: center;
+    .header{
+        margin-bottom: 1rem;
+    }
+    .footer-button{
+        margin: 3rem;
+        .icon{
+            margin: 0 0 0 0.5rem!important;
+        }
+    }
+    
+    .content-wrapper{   
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 1rem;
+        width: 100%;
+        overflow-x: auto;
+        padding: 1rem 3rem;
+
+    .cards-grid{
+        display: grid;
+        // flex-direction: row;
+        align-self: center;
+        justify-content: center;
+        gap: 2rem;
+        // gap: 2rem;
+        @media (max-width: 1441px){
+            grid-template-columns: auto auto auto auto;
+        }
+        
+        @media  screen and (max-width: 1440px) {
+            grid-template-columns: auto auto auto;
+        }
+       
+
+        @media screen and (max-width: 930px) {
+            grid-template-columns: auto auto;
+        }
+
+        @media screen and (max-width: 625px) {
+            grid-template-columns: auto;
+        }
+
+          
+        
+        .single-card{
+            box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+            background-color: white;
+            box-sizing: border-box;
+            padding: 2rem 0rem;
+            // border: 2px solid black;
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            // width: 16rem;
+            .icon{
+                 
+                border-radius: 0.5rem;
+                color: #2797ff;
+                background: rgb(39,151,255,0.5);
+                padding: 1rem;
+                
+            }
+            .sigle-card-content{
+                margin-top: 2rem;
+                text-align: center;
+            }
+            .list{
+                display: flex;
+                flex-direction: column;
+                .icon-text{
+                    align-items: center;
+                }
+                .subtitle{
+                    margin-top: 0;
+                    display: block;
+                }
+                .icon{
+                    border-radius: 0;
+                    color: #2797ff;
+                    background: transparent;
+                    padding: 0rem;
+                    
+                }
+                
+            }
+
+        }
+    }
+}
+}
