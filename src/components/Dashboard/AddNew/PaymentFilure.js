@@ -10,10 +10,10 @@ const PaymentFilure = () => {
    
     if(cookies.payment){
       removeCookie("payment");
-      navigate("/account")
+      navigate("/")
     }
     if(!cookies.payment){
-      navigate("/account")
+      navigate("/")
     }
 
   },[])

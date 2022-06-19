@@ -109,7 +109,7 @@ const Login = () => {
        
         <div className="login-form">
           
-        <button className="button is-ghost home" onClick={()=>navigate('/')}>{"<- Home"}</button>
+        {/* <button className="button is-ghost home" onClick={()=>navigate('/')}>{"<- Home"}</button> */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <p className="title is-3">Login to account</p>
 
@@ -146,8 +146,8 @@ const Login = () => {
           </Typography>
         </div>
         <div className="signup-link">
-          <p className="title is-6">Don't have an account ?</p>
-          <Link to="/signup">Create account</Link>
+          {/* <p className="title is-6">Don't have an account ?</p>
+          <Link to="/signup">Create account</Link> */}
         </div>
         <button className="button is-medium is-fullwidth is-warning">
           Next

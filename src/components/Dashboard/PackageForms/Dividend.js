@@ -292,10 +292,10 @@ const Dividend = () => {
       setEndDate("");
       setMonthsList([]);
       if (packageId) {
-        navigate("/account");
+        navigate("/");
       } else {
         if (params.orderId) {
-          navigate("/account");
+          navigate("/");
         } else {
           if (cookies.order.selectedPackages.length > 1) {
             const filteredEmployement = cookies.order.selectedPackages.filter(
@@ -327,10 +327,10 @@ const Dividend = () => {
                 `/${filtered[0].package.name.toLowerCase().replace(/\s/g, "")}`
               );
             } else {
-              navigate("/account");
+              navigate("/");
             }
           } else {
-            navigate("/account");
+            navigate("/");
           }
         }
       }

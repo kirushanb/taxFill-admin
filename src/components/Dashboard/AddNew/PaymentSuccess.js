@@ -51,7 +51,7 @@ const PaymentSuccess = () => {
         // errRef.current.focus();
     }
     }else{
-      navigate("/account")
+      navigate("/")
     }
   },[])
 

@@ -32,7 +32,7 @@ const Header = () => {
   }
 
   const handleAccount = () => {
-    navigate('/account')
+    navigate('/')
   }
 
 

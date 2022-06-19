@@ -93,7 +93,7 @@ const OTP = () => {
         });
         setLoading(false);
       
-        navigate('/account');
+        navigate('/');
     } catch (err) {
       setLoading(false);
       if(err.response.data.isError){

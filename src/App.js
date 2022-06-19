@@ -37,19 +37,19 @@ function App() {
 
   return (
     <Routes>
-      <Route
+      {/* <Route
         path="/"
         element={
           <Layout>
             <Home />
           </Layout>
         }
-      />
+      /> */}
       <Route path="/login" element={<Login />} />
       <Route path="/otp" element={<OTP />} />
-      <Route path="/signup" element={<Signup />} />
+      {/* <Route path="/signup" element={<Signup />} /> */}
       <Route element={<RequireAuth />}>
-        <Route path="/account" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard />} />
       </Route>
       <Route element={<RequireAuth />}>
         <Route

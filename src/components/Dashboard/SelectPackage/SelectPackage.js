@@ -51,7 +51,7 @@ const SelectPackage = () => {
             setIsLoading(false);
         }else{
            
-            navigate('/account')
+            navigate('/')
         }
         
     
@@ -83,7 +83,7 @@ const SelectPackage = () => {
 </div>
 
     </div>
-    <button className="button is-success is-rounded footer-button" onClick={()=> navigate('/account')}>Or Later<span className="icon">
+    <button className="button is-success is-rounded footer-button" onClick={()=> navigate('/')}>Or Later<span className="icon">
     <i className="fas fa-arrow-right"></i>
   </span></button>
         </div>

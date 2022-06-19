@@ -69,7 +69,7 @@ const EditPackage = () => {
     if (params.orderId) {
       getData();
     } else {
-      navigate("/account");
+      navigate("/");
     }
   }, []);
 
