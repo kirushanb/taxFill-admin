@@ -109,7 +109,9 @@ export default function DataTable() {
     let filteredData = data.filter(value => {
       return (
         value.timeDAte.toLowerCase().includes(searchInput.toLowerCase()) ||
-        value.packages.toLowerCase().includes(searchInput.toLowerCase()) 
+        value.packages.toLowerCase().includes(searchInput.toLowerCase()) ||
+        String(value.orderID).toLowerCase().includes(searchInput.toLowerCase())
+        
       );
     });
     setRows([...filteredData]);
