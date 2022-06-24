@@ -1,4 +1,10 @@
-import { CircularProgress } from "@mui/material";
+import {
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,6 +20,7 @@ import lottie from "lottie-web";
 import loadingAnim from "../../../static/working.json";
 import { toast, ToastContainer } from "react-toastify";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+
 const defaultPackages = [
   "Employment",
   "Self employment",
@@ -30,11 +37,10 @@ const EditPackage = () => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [deletepackage, setDeletepackage] = useState("");
   const [deletepackageId, setDeletepackageId] = useState("");
-  const [cookies, setCookie, removeCookie] = useCookies();
   const navigate = useNavigate();
   const params = useParams();
   const axiosPrivate = useAxiosPrivate();
-
+  const [status, setStatus] = useState('');
   useEffect(() => {
     const element = document.querySelector("#loading");
     if (element) {
@@ -139,6 +145,18 @@ const EditPackage = () => {
         const response = await axiosPrivate.delete(
           `https://tax.api.cyberozunu.com/api/v1.1/RentalIncome/${deletepackageId}`
         );
+      }else if (
+        deletepackage.toLowerCase().replace(/\s/g, "") === "dividend"
+      ) {
+        const response = await axiosPrivate.delete(
+          `https://tax.api.cyberozunu.com/api/v1.1/Dividend/${deletepackageId}`
+        );
+      }else if (
+        deletepackage.toLowerCase().replace(/\s/g, "") === "bankinterest"
+      ) {
+        const response = await axiosPrivate.delete(
+          `https://tax.api.cyberozunu.com/api/v1.1/BankDetail/${deletepackageId}`
+        );
       }
       toast.success(`Package deleted successfully`);
       setLoading(false);
@@ -175,8 +193,23 @@ const EditPackage = () => {
             <ArrowBackIosNewIcon className="back-icon" />
             <h5 className="title is-5">Back</h5>
           </div>
-
-          <p className="title is-3 header">Select document: </p>
+          <div className="heading-edit-package">
+          <p className="title is-3 header">Select documents: </p>
+          <FormControl size="medium" sx={{width: 200}}>
+            <InputLabel id="demo-simple-select-label">{"Status"}</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={status}
+              label="Status"
+              onChange={(e)=> setStatus(e.target.value)}
+            >
+              <MenuItem value={'active'}>Active</MenuItem>
+              <MenuItem value={'inactive'}>Inactive</MenuItem>
+            </Select>
+          </FormControl>
+          </div>
+          
           <div className="content-wrapper-1">
             <div className="cards-grid-1 container">
               {isLoading ? (
@@ -199,9 +232,10 @@ const EditPackage = () => {
                       if (i === 0) {
                         return (
                           <TreeItem
-                            nodeId={l + "-" + i}
+                            nodeId={l + "-" + i+0+"-"}
                             label={
                               <div
+                               
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
@@ -231,7 +265,7 @@ const EditPackage = () => {
                                 nodeId={p.name + "-" + v}
                                 label={
                                   <div
-                                    key={p.name + "-" + v}
+                                    key={p.name + "-" + v+"-"}
                                     className="sigle-line"
                                   >
                                     <p
@@ -244,12 +278,12 @@ const EditPackage = () => {
                                       {v + 1 + ". " + p.name}
                                     </p>{" "}
                                     <div>
-                                       <button
+                                      <button
                                         className="button is-success"
                                         onClick={() => hanclickEdit(p.id, l)}
                                         style={{ marginRight: "1rem" }}
                                       >
-                                       View
+                                        View
                                       </button>{" "}
                                       <button
                                         className="button is-danger"
@@ -267,9 +301,10 @@ const EditPackage = () => {
                       } else if (i === 1) {
                         return (
                           <TreeItem
-                            nodeId={l + "-" + i}
+                            nodeId={l + "-" + i+1+"-"}
                             label={
                               <div
+                             
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
@@ -298,7 +333,7 @@ const EditPackage = () => {
                                 nodeId={p.name + "-" + v}
                                 label={
                                   <div
-                                    key={p.name + "-" + v}
+                                   
                                     className="sigle-line"
                                   >
                                     <p
@@ -312,12 +347,12 @@ const EditPackage = () => {
                                     </p>
                                     <div>
                                       {" "}
-                                       <button
+                                      <button
                                         className="button is-success"
                                         onClick={() => hanclickEdit(p.id, l)}
                                         style={{ marginRight: "1rem" }}
                                       >
-                                       View
+                                        View
                                       </button>{" "}
                                       <button
                                         className="button is-danger"
@@ -335,9 +370,10 @@ const EditPackage = () => {
                       } else if (i === 2) {
                         return (
                           <TreeItem
-                            nodeId={l + "-" + i}
+                            nodeId={l + "-" + i+2+"-"}
                             label={
                               <div
+                            
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
@@ -366,7 +402,7 @@ const EditPackage = () => {
                                 nodeId={p.name + "-" + v}
                                 label={
                                   <div
-                                    key={p.name + "-" + v}
+                                   
                                     className="sigle-line"
                                   >
                                     <p
@@ -380,12 +416,12 @@ const EditPackage = () => {
                                     </p>{" "}
                                     <div>
                                       {" "}
-                                       <button
+                                      <button
                                         className="button is-success"
                                         onClick={() => hanclickEdit(p.id, l)}
                                         style={{ marginRight: "1rem" }}
                                       >
-                                       View
+                                        View
                                       </button>{" "}
                                       <button
                                         className="button is-danger"
@@ -403,9 +439,10 @@ const EditPackage = () => {
                       } else if (i === 3) {
                         return (
                           <TreeItem
-                            nodeId={l + "-" + i}
+                            nodeId={l + "-" + i+3+"-"}
                             label={
                               <div
+                             
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
@@ -434,7 +471,7 @@ const EditPackage = () => {
                                 nodeId={p.name + "-" + v}
                                 label={
                                   <div
-                                    key={p.name + "-" + v}
+                                   
                                     className="sigle-line"
                                   >
                                     <p
@@ -448,12 +485,12 @@ const EditPackage = () => {
                                     </p>{" "}
                                     <div>
                                       {" "}
-                                       <button
+                                      <button
                                         className="button is-success"
                                         onClick={() => hanclickEdit(p.id, l)}
                                         style={{ marginRight: "1rem" }}
                                       >
-                                       View
+                                        View
                                       </button>{" "}
                                       <button
                                         className="button is-danger"
@@ -471,9 +508,10 @@ const EditPackage = () => {
                       } else if (i === 4) {
                         return (
                           <TreeItem
-                            nodeId={l + "-" + i}
+                            nodeId={l + "-" + i+4+"-"}
                             label={
                               <div
+                              key={l + "-" + i+"-"+4}
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
@@ -502,7 +540,7 @@ const EditPackage = () => {
                                 nodeId={p.propertyName + "-" + v}
                                 label={
                                   <div
-                                    key={p.propertyName + "-" + v}
+                                    key={p.propertyName + "-" + v+"-"}
                                     className="sigle-line"
                                   >
                                     <p
@@ -516,12 +554,12 @@ const EditPackage = () => {
                                     </p>{" "}
                                     <div>
                                       {" "}
-                                       <button
+                                      <button
                                         className="button is-success"
                                         onClick={() => hanclickEdit(p.id, l)}
                                         style={{ marginRight: "1rem" }}
                                       >
-                                       View
+                                        View
                                       </button>{" "}
                                       <button
                                         className="button is-danger"
@@ -539,9 +577,10 @@ const EditPackage = () => {
                       } else if (i === 5) {
                         return (
                           <TreeItem
-                            nodeId={l + "-" + i}
+                            nodeId={l + "-" + i+5+"-"}
                             label={
                               <div
+                             
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
@@ -570,7 +609,7 @@ const EditPackage = () => {
                                 nodeId={p.companyName + "-" + v}
                                 label={
                                   <div
-                                    key={p.companyName + "-" + v}
+                                    key={p.companyName + "-" + v+"-"}
                                     className="sigle-line"
                                   >
                                     <p
@@ -584,12 +623,12 @@ const EditPackage = () => {
                                     </p>{" "}
                                     <div>
                                       {" "}
-                                       <button
+                                      <button
                                         className="button is-success"
                                         onClick={() => hanclickEdit(p.id, l)}
                                         style={{ marginRight: "1rem" }}
                                       >
-                                       View
+                                        View
                                       </button>{" "}
                                       <button
                                         className="button is-danger"
@@ -607,9 +646,10 @@ const EditPackage = () => {
                       } else if (i === 6) {
                         return (
                           <TreeItem
-                            nodeId={l + "-" + i}
+                            nodeId={l + "-" + i+6+"-"}
                             label={
                               <div
+                            
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
@@ -638,7 +678,7 @@ const EditPackage = () => {
                                 nodeId={p.bankName + "-" + v}
                                 label={
                                   <div
-                                    key={p.bankName + "-" + v}
+                                    
                                     className="sigle-line"
                                   >
                                     <p
@@ -652,12 +692,12 @@ const EditPackage = () => {
                                     </p>{" "}
                                     <div>
                                       {" "}
-                                       <button
+                                      <button
                                         className="button is-success"
                                         onClick={() => hanclickEdit(p.id, l)}
                                         style={{ marginRight: "1rem" }}
                                       >
-                                       View
+                                        View
                                       </button>{" "}
                                       <button
                                         className="button is-danger"

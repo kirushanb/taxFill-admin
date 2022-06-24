@@ -27,7 +27,7 @@ const Login = () => {
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
     
-   
+    const [cookies, setCookie] = useCookies(["user"]);
     const [errMsg, setErrMsg] = useState('');
 
     useEffect(() => {
@@ -68,7 +68,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     setLoading(true)
     try {
-        const response1 = await axios.get('https://tax.api.cyberozunu.com/api/v1.1/Authentication/Client-token?id=474FA9DA-28DB-4635-B666-EB5B6C662537&key=uwODmcIAA0e2dwKD8ifprQ%3D%3D',{headers: {"Access-Control-Allow-Origin": "*"}});
+        const response1 = await axios.get('https://tax.api.cyberozunu.com/api/v1.1/Authentication/Client-token?id=FDAB11A5-7B4E-4CCA-90D6-270FBCBDC44E&key=PD06fUlbFU67Wzl23yVrlw==',{headers: {"Access-Control-Allow-Origin": "*"}});
         const response = await axios.post('https://tax.api.cyberozunu.com/api/v1.1/Authentication/login',
             JSON.stringify({ userName:data.email, password:data.password }),
             {
@@ -79,17 +79,20 @@ const Login = () => {
                 // withCredentials: true
             }
         );
-        console.log(response);
-        console.log(response?.data.result);
-        console.log(response?.data.result.otp);
-        //console.log(JSON.stringify(response));
-        const accessToken2FA = response?.data?.result?.token;
-        const otp = response?.data?.result?.otp
-        setAuth({ accessToken2FA, otp });
+
+        
+        const accessToken = response?.data?.result?.token;
+        const refreshToken = response?.data?.result?.refreshToken;
+        setAuth({ accessToken });
+        setCookie("user", accessToken, {
+            path: "/"
+          });
+        setCookie("refreshToken", refreshToken, {
+          path: "/"
+        });
         setLoading(false);
-        // setUser('');
-        // setPwd('');
-        navigate('/otp');
+      
+        navigate('/');
     } catch (err) {
       setLoading(false);
       if(err.response.data.isError){

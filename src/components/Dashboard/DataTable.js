@@ -123,15 +123,15 @@ export default function DataTable() {
           "https://tax.api.cyberozunu.com/api/v1.1/Order"
         );
         const filtered = [
-          ...response.data.result.data.map((n) =>
+          ...response.data.result.data.map((n,k) =>
             createData(
               n.serialNo,
               moment(n.createdOn).format("DD/MM/YYYY, HH:mm:ss"),
               n.selectedPackages.map((p) => " " + p.package.name).join(","),
-              <div style={{ width: "300px" }}>
+              <div id={n.serialNo+"-"+k} style={{ width: "300px" }}>
                 <button
                   onClick={() => null}
-                  key={n.serialNo}
+                  
                   className="button is-info is-small"
                 >
                   <AddchartIcon />
@@ -140,7 +140,7 @@ export default function DataTable() {
                 <button
                   style={{ marginLeft: "0.5rem" }}
                   onClick={() => handleOnClickEditData(n.id)}
-                  key={n.serialNo}
+                 
                   className="button is-warning is-small"
                 >
                   <AddchartIcon />
