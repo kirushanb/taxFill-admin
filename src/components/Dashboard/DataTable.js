@@ -20,7 +20,11 @@ import {
   InputLabel,
   TextField,
 } from "@mui/material";
-import { Search } from "@mui/icons-material";
+import {
+  PanoramaFishEyeOutlined,
+  RemoveRedEye,
+  Search,
+} from "@mui/icons-material";
 import moment from "moment";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -45,28 +49,49 @@ const columns = [
   {
     id: "packages",
     label: "Packages",
-    minWidth: 210,
+    minWidth: 150,
+    align: "right",
+    // format: (value) => value.toLocaleString('en-US'),
+  },
+  {
+    id: "customerName",
+    label: "Customer Name",
+    minWidth: 150,
+    align: "right",
+    // format: (value) => value.toLocaleString('en-US'),
+  },
+  {
+    id: "nI_Number",
+    label: "NI Number",
+    minWidth: 120,
     align: "right",
     // format: (value) => value.toLocaleString('en-US'),
   },
   {
     id: "status",
     label: "Status",
-    minWidth: 170,
+    minWidth: 100,
     align: "right",
     // format: (value) => value.toLocaleString('en-US'),
   },
   {
     id: "options",
     label: "Options",
-    minWidth: 170,
+    minWidth: 150,
     align: "right",
     // format: (value) => value.toFixed(2),
   },
 ];
 
-function createData(orderID, timeDAte, packages, options) {
-  return { orderID, timeDAte, packages, options };
+function createData(
+  orderID,
+  timeDAte,
+  packages,
+  customerName,
+  nI_Number,
+  options
+) {
+  return { orderID, timeDAte, packages, customerName, nI_Number, options };
 }
 
 // const rows = [
@@ -87,6 +112,8 @@ export default function DataTable() {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const [isLoading, setLoading] = React.useState(true);
+  const [customerModal, setCustomerModal] = React.useState(false);
+  const [customer, setCustomer] = React.useState({address:'',dob:'',email:'',firstName:'',lastName:'',id:'',nI_Number:'',phoneNumber:'',utR_Number:''});
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -102,20 +129,28 @@ export default function DataTable() {
   const handleOnClickEditData = (id) => {
     navigate(`/view/${id}`);
   };
-  
-  const handleSearch = e => {
-    if(!e.target.value || !e.target.value.trim())return;
+
+  const handleOnClickShowCustomer = (customer) => {
+    setCustomerModal(true);
+    setCustomer(customer);
+  };
+
+  const handleSearch = (e) => {
+    if (!e.target.value || !e.target.value.trim()) return;
     let searchInput = e.target.value;
-    let filteredData = data.filter(value => {
+    let filteredData = data.filter((value) => {
       return (
         value.timeDAte.toLowerCase().includes(searchInput.toLowerCase()) ||
         value.packages.toLowerCase().includes(searchInput.toLowerCase()) ||
-        String(value.orderID).toLowerCase().includes(searchInput.toLowerCase())
-        
+        String(value.orderID).toLowerCase().includes(searchInput.toLowerCase()) || 
+        value.customerName.toLowerCase().includes(searchInput.toLowerCase()) ||
+        value.nI_Number.toLowerCase().includes(searchInput.toLowerCase())
       );
     });
+    setRowsPerPage(5);
+    setPage(0);
     setRows([...filteredData]);
-}
+  };
 
   React.useEffect(() => {
     const getData = async () => {
@@ -125,15 +160,18 @@ export default function DataTable() {
           "https://tax.api.cyberozunu.com/api/v1.1/Order"
         );
         const filtered = [
-          ...response.data.result.data.map((n,k) =>
+          ...response.data.result.data.map((n, k) =>
             createData(
               n.serialNo,
               moment(n.createdOn).format("DD/MM/YYYY, HH:mm:ss"),
               n.selectedPackages.map((p) => " " + p.package.name).join(","),
-              <div id={n.serialNo+"-"+k} style={{ width: "300px" }}>
+              `${n?.customer?.firstName ? n?.customer?.firstName : ""} ${
+                n?.customer?.lastName ? n?.customer?.lastName : ""
+              }`,
+              n?.customer?.nI_Number,
+              <div id={n.serialNo + "-" + k} style={{ width: "300px" }}>
                 <button
                   onClick={() => null}
-                  
                   className="button is-info is-small"
                 >
                   <AddchartIcon />
@@ -142,16 +180,23 @@ export default function DataTable() {
                 <button
                   style={{ marginLeft: "0.5rem" }}
                   onClick={() => handleOnClickEditData(n.id)}
-                 
                   className="button is-warning is-small"
                 >
                   <AddchartIcon />
                   <p style={{ marginLeft: "0.5rem" }}>{"View Data"}</p>
                 </button>
+                <button
+                  style={{ marginTop: "0.5rem" }}
+                  onClick={() => handleOnClickShowCustomer(n?.customer)}
+                  className="button is-warning is-small"
+                >
+                  <RemoveRedEye />
+                  <p style={{ marginLeft: "0.5rem" }}>{"View Customer"}</p>
+                </button>
               </div>
             )
           ),
-        ]
+        ];
         setRows([...filtered]);
         setData([...filtered]);
         setLoading(false);
@@ -247,6 +292,65 @@ export default function DataTable() {
           </>
         )}
       </Paper>
+      <div className={`modal ${customerModal ? "is-active" : ""}`}>
+        <div
+          className="modal-background"
+          onClick={() => setCustomerModal(false)}
+        ></div>
+        <div className="modal-content" style={{ padding: "1rem" }}>
+          <h4 className="title is-3">Customer details:</h4>
+          <table className="table is-bordered is-hoverable is-fullwidth">
+          <tbody>
+            <tr>
+              <th>Name</th>
+              <td>{ `${customer.firstName} ${customer.lastName}`}</td>
+            </tr>
+            <tr>
+              <th>Email</th>
+              <td>{customer.email}</td>
+            </tr>
+            <tr>
+              <th>DOB</th>
+              <td>{moment(customer.dob).format("DD/MM/YYYY")}</td>
+            </tr>
+            <tr>
+              <th>Address</th>
+              <td>{customer?.address.replace(/"/g, "").replace(/{/g, "").replace(/}/g, "").split(",").map((n, i)=> {
+                if(i===0){
+                  return(<tr key={n}>
+                    <td>{`${n} ${customer?.address.replace(/"/g, "").replace(/{/g, "").replace(/}/g, "").split(",")[i+1] ? customer?.address.replace(/"/g, "").replace(/{/g, "").replace(/}/g, "").split(",")[i+1] : ''} ${customer?.address.replace(/"/g, "").replace(/{/g, "").replace(/}/g, "").split(",")[i+2] ? customer?.address.replace(/"/g, "").replace(/{/g, "").replace(/}/g, "").split(",")[i+2] :''}`}</td>
+                  </tr>)
+                }else if(i===1 || i===2){
+                  return;
+                }
+                return(<tr key={n}>
+                  <td>{n}</td>
+                </tr>)
+              }
+                
+                )}</td>
+            </tr>
+            <tr>
+              <th>Phone no.</th>
+              <td>{customer.phoneNumber}</td>
+            </tr>
+            <tr>
+              <th>NI number</th>
+              <td>{customer.nI_Number}</td>
+            </tr>
+            <tr>
+              <th>UTR number</th>
+              <td>{customer.utR_Number}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <button
+          className="modal-close is-large"
+          aria-label="close"
+          onClick={() => setCustomerModal(false)}
+        ></button>
+      </div>
     </div>
   );
 }
