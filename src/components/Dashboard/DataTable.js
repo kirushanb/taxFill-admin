@@ -165,9 +165,10 @@ export default function DataTable() {
               n.serialNo,
               moment(n.createdOn).format("DD/MM/YYYY, HH:mm:ss"),
               n.selectedPackages.map((p) => " " + p.package.name).join(","),
-              `${n?.customer?.firstName ? n?.customer?.firstName : ""} ${
+              <p className="customer-name" onClick={() => handleOnClickShowCustomer(n?.customer)}>{`${n?.customer?.firstName ? n?.customer?.firstName : ""} ${
                 n?.customer?.lastName ? n?.customer?.lastName : ""
-              }`,
+              }`}</p>
+              ,
               n?.customer?.nI_Number,
               <div id={n.serialNo + "-" + k} style={{ width: "300px" }}>
                 <button
@@ -185,20 +186,20 @@ export default function DataTable() {
                   <AddchartIcon />
                   <p style={{ marginLeft: "0.5rem" }}>{"View Data"}</p>
                 </button>
-                <button
+                {/* <button
                   style={{ marginTop: "0.5rem" }}
-                  onClick={() => handleOnClickShowCustomer(n?.customer)}
+                  
                   className="button is-warning is-small"
                 >
                   <RemoveRedEye />
                   <p style={{ marginLeft: "0.5rem" }}>{"View Customer"}</p>
-                </button>
+                </button> */}
               </div>
             )
           ),
         ];
-        setRows([...filtered]);
-        setData([...filtered]);
+        setRows([...filtered.sort((a,b)=> moment(b.timeDAte,"DD/MM/YYYY, HH:mm:ss") - moment(a.timeDAte,"DD/MM/YYYY, HH:mm:ss"))]);
+        setData([...filtered.sort((a,b)=> moment(b.timeDAte,"DD/MM/YYYY, HH:mm:ss") - moment(a.timeDAte,"DD/MM/YYYY, HH:mm:ss"))]);
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -297,7 +298,7 @@ export default function DataTable() {
           className="modal-background"
           onClick={() => setCustomerModal(false)}
         ></div>
-        <div className="modal-content" style={{ padding: "1rem" }}>
+        <div className="modal-content" style={{ padding: "24px", borderRadius:"16px" }}>
           <h4 className="title is-3">Customer details:</h4>
           <table className="table is-bordered is-hoverable is-fullwidth">
           <tbody>
@@ -317,15 +318,10 @@ export default function DataTable() {
               <th>Address</th>
               <td>{customer?.address.replace(/"/g, "").replace(/{/g, "").replace(/}/g, "").split(",").map((n, i)=> {
                 if(i===0){
-                  return(<tr key={n}>
-                    <td>{`${n} ${customer?.address.replace(/"/g, "").replace(/{/g, "").replace(/}/g, "").split(",")[i+1] ? customer?.address.replace(/"/g, "").replace(/{/g, "").replace(/}/g, "").split(",")[i+1] : ''} ${customer?.address.replace(/"/g, "").replace(/{/g, "").replace(/}/g, "").split(",")[i+2] ? customer?.address.replace(/"/g, "").replace(/{/g, "").replace(/}/g, "").split(",")[i+2] :''}`}</td>
-                  </tr>)
-                }else if(i===1 || i===2){
-                  return;
+                  return(
+                    <p>{`${n.split(":").pop()}${customer?.address.replace(/"/g, "").replace(/{/g, "").replace(/}/g, "").split(",")[i+1] ? ", "+customer?.address.replace(/"/g, "").replace(/{/g, "").replace(/}/g, "").split(",")[i+1] + "," : ''} ${customer?.address.replace(/"/g, "").replace(/{/g, "").replace(/}/g, "").split(",")[i+2] ? customer?.address.replace(/"/g, "").replace(/{/g, "").replace(/}/g, "").split(",")[i+2] :''}`}</p>
+                  )
                 }
-                return(<tr key={n}>
-                  <td>{n}</td>
-                </tr>)
               }
                 
                 )}</td>
