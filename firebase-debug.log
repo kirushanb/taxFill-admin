@@ -1,0 +1,29 @@
+[debug] [2022-08-14T14:58:35.321Z] ----------------------------------------------------------------------
+[debug] [2022-08-14T14:58:35.324Z] Command:       /opt/homebrew/Cellar/node/18.0.0/bin/node /opt/homebrew/bin/firebase deploy
+[debug] [2022-08-14T14:58:35.324Z] CLI Version:   11.2.2
+[debug] [2022-08-14T14:58:35.324Z] Platform:      darwin
+[debug] [2022-08-14T14:58:35.324Z] Node Version:  v18.0.0
+[debug] [2022-08-14T14:58:35.326Z] Time:          Sun Aug 14 2022 20:28:35 GMT+0530 (India Standard Time)
+[debug] [2022-08-14T14:58:35.327Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-08-14T14:58:35.401Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-08-14T14:58:35.401Z] > authorizing via signed-in user (kirushanbalakrishnan@gmail.com)
+[debug] [2022-08-14T14:58:35.401Z] [iam] checking project tax-fill-admin for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2022-08-14T14:58:35.403Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/tax-fill-admin:testIamPermissions [none]
+[debug] [2022-08-14T14:58:35.403Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/tax-fill-admin:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2022-08-14T14:58:38.196Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/tax-fill-admin:testIamPermissions 200
+[debug] [2022-08-14T14:58:38.196Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/tax-fill-admin:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2022-08-14T14:58:38.197Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/tax-fill-admin [none]
+[debug] [2022-08-14T14:58:44.408Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/tax-fill-admin 200
+[debug] [2022-08-14T14:58:44.408Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/tax-fill-admin {"projectId":"tax-fill-admin","projectNumber":"50614070652","displayName":"tax-fill-admin","name":"projects/tax-fill-admin","resources":{"hostingSite":"tax-fill-admin"},"state":"ACTIVE","etag":"1_89b13f0f-8a4f-4c14-8990-59cc3a25e528"}
+[info] 
+[info] === Deploying to 'tax-fill-admin'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2022-08-14T14:58:44.411Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/tax-fill-admin [none]
+[debug] [2022-08-14T14:59:14.414Z] Timeout reached making request to https://firebase.googleapis.com/v1beta1/projects/tax-fill-admin
+[debug] [2022-08-14T14:59:16.535Z] FirebaseError: Timeout reached making request to https://firebase.googleapis.com/v1beta1/projects/tax-fill-admin
+    at RetryOperation._fn (/opt/homebrew/lib/node_modules/firebase-tools/lib/apiv2.js:237:35)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[error] 
+[error] Error: Failed to get Firebase project tax-fill-admin. Please make sure the project exists and your account has permission to access it.
