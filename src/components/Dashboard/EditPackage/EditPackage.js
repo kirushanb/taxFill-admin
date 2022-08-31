@@ -4,6 +4,8 @@ import {
   InputLabel,
   MenuItem,
   Select,
+
+
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
@@ -20,6 +22,7 @@ import lottie from "lottie-web";
 import loadingAnim from "../../../static/working.json";
 import { toast, ToastContainer } from "react-toastify";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 
 const defaultPackages = [
   "Employment",
@@ -31,6 +34,11 @@ const defaultPackages = [
   "Bank interest",
 ];
 const EditPackage = () => {
+  const [openPostModal, setOpenPostModal] = useState(false);
+  const [selectOption, setSelectOption] = useState("")
+  const [dropDownList, setDropDownList] = useState([]);
+
+
   const [list, setList] = useState([[]]);
   const [isLoading, setIsLoading] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -40,9 +48,19 @@ const EditPackage = () => {
   const navigate = useNavigate();
   const params = useParams();
   const axiosPrivate = useAxiosPrivate();
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState(0);
+  const [taxYear, setTaxYear] = useState();
+  const [serialNo, setSerialNo] = useState();
+
+
+  //console.log("status", status)
+
+
+
   useEffect(() => {
+
     const element = document.querySelector("#loading");
+    console.log("element", element)
     if (element) {
       lottie.loadAnimation({
         container: element,
@@ -52,7 +70,22 @@ const EditPackage = () => {
         autoplay: true, // boolean
       });
     }
-  }, [loading]);
+  }, []);
+
+
+  // for the drop down list
+
+  const getOptionData = async () => {
+
+    try {
+      const response = await axiosPrivate.get(
+        'http://tax.api.cyberozunu.com/api/v1.1/Configuration/order-status'
+      );
+      setDropDownList(response.data.result);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const getData = async () => {
     setIsLoading(true);
@@ -62,7 +95,10 @@ const EditPackage = () => {
       );
 
       setList(response.data.result);
-
+      //console.log("result", response.data.result);
+      setTaxYear(response.data.result.taxYear);
+      setStatus(response.data.result.status);
+      setSerialNo(response.data.result.serialNo)
       setIsLoading(false);
     } catch (err) {
       console.error(err);
@@ -73,11 +109,23 @@ const EditPackage = () => {
 
   useEffect(() => {
     if (params.orderId) {
+
       getData();
+      getOptionData();
+
     } else {
       navigate("/");
     }
+
   }, []);
+
+  const handleChange = (e) => {
+    setSelectOption(e.target.value);
+    setOpenPostModal(true);
+    setStatus(e.target.value);
+
+  }
+
 
   const ColoredLine = ({ color }) => (
     <hr
@@ -91,8 +139,7 @@ const EditPackage = () => {
 
   const hanclickEdit = (id, packageName) => {
     navigate(
-      `/${packageName.toLowerCase().replace(/\s/g, "")}/${
-        params.orderId
+      `/${packageName.toLowerCase().replace(/\s/g, "")}/${params.orderId
       }/?packageId=${id}`
     );
   };
@@ -145,13 +192,13 @@ const EditPackage = () => {
         const response = await axiosPrivate.delete(
           `https://tax.api.cyberozunu.com/api/v1.1/RentalIncome/${deletepackageId}`
         );
-      }else if (
+      } else if (
         deletepackage.toLowerCase().replace(/\s/g, "") === "dividend"
       ) {
         const response = await axiosPrivate.delete(
           `https://tax.api.cyberozunu.com/api/v1.1/Dividend/${deletepackageId}`
         );
-      }else if (
+      } else if (
         deletepackage.toLowerCase().replace(/\s/g, "") === "bankinterest"
       ) {
         const response = await axiosPrivate.delete(
@@ -176,6 +223,35 @@ const EditPackage = () => {
     }
   };
 
+  const handleOnChangeStatus = async () => {
+
+    setLoading(true);
+
+    try {
+      const response = await axiosPrivate.post(`http://tax.api.cyberozunu.com/api/v1.1/Order/update-status/${params.orderId}?status=${selectOption}`);
+      toast.success(`Status Updated Successfully`);
+
+      setLoading(false);
+      setOpenPostModal(false);
+      setSelectOption("");
+      //getOptionData();
+
+    }
+
+    catch (err) {
+      console.error(err);
+      setLoading(false);
+      setOpenPostModal(false);
+      setSelectOption("");
+      if (err.response.data.isError) {
+        toast.error(err.response.data.error.detail);
+      }
+    }
+
+  }
+
+
+
   return (
     <React.Fragment>
       <ToastContainer />
@@ -188,28 +264,45 @@ const EditPackage = () => {
           )}
         </React.Fragment>
       ) : (
+
         <div className="EditPackage">
-          <div className="back-button" onClick={() => navigate(-1)}>
-            <ArrowBackIosNewIcon className="back-icon" />
-            <h5 className="title is-5">Back</h5>
+          <div className="tax-edit-package">
+            <div className="back-button" onClick={() => navigate(-1)}>
+              <ArrowBackIosNewIcon className="back-icon" />
+              <h5 className="title is-5">Back</h5> 
+            </div>  
+            <div>
+              <h5 className="title is-3 header" >
+               #{serialNo} { taxYear ? `(Tax Year ${taxYear})` : ""}
+            </h5>
+              </div>         
           </div>
+        
           <div className="heading-edit-package">
-          <p className="title is-3 header">Select documents: </p>
-          <FormControl size="medium" sx={{width: 200}}>
-            <InputLabel id="demo-simple-select-label">{"Status"}</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={status}
-              label="Status"
-              onChange={(e)=> setStatus(e.target.value)}
-            >
-              <MenuItem value={'active'}>Active</MenuItem>
-              <MenuItem value={'inactive'}>Inactive</MenuItem>
-            </Select>
-          </FormControl>
+            <p className="title is-3 header" alignItems="center" justifyContent="center">Update Status: </p>  
+            <div>
+            <FormControl size="medium" sx={{ width: 250 }}>
+              <InputLabel id="demo-simple-select-label">{"Status"}</InputLabel>
+
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={status}
+                label="Status"
+                onChange={handleChange}
+              >
+
+                {/* { <MenuItem value={'active'}>Active</MenuItem>
+              <MenuItem value={'inactive'}>Inactive</MenuItem>} */}
+
+                {dropDownList.map(item => <MenuItem key={item.id} value={item.id}>{item.values}</MenuItem>)}
+
+              </Select>
+            </FormControl>
+            </div>     
           </div>
-          
+
+
           <div className="content-wrapper-1">
             <div className="cards-grid-1 container">
               {isLoading ? (
@@ -232,10 +325,9 @@ const EditPackage = () => {
                       if (i === 0) {
                         return (
                           <TreeItem
-                            nodeId={l + "-" + i+0+"-"}
+                            nodeId={l + "-" + i + 0 + "-"}
                             label={
                               <div
-                               
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
@@ -265,7 +357,7 @@ const EditPackage = () => {
                                 nodeId={p.name + "-" + v}
                                 label={
                                   <div
-                                    key={p.name + "-" + v+"-"}
+                                    key={p.name + "-" + v + "-"}
                                     className="sigle-line"
                                   >
                                     <p
@@ -301,10 +393,10 @@ const EditPackage = () => {
                       } else if (i === 1) {
                         return (
                           <TreeItem
-                            nodeId={l + "-" + i+1+"-"}
+                            nodeId={l + "-" + i + 1 + "-"}
                             label={
                               <div
-                             
+
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
@@ -333,7 +425,7 @@ const EditPackage = () => {
                                 nodeId={p.name + "-" + v}
                                 label={
                                   <div
-                                   
+
                                     className="sigle-line"
                                   >
                                     <p
@@ -370,10 +462,10 @@ const EditPackage = () => {
                       } else if (i === 2) {
                         return (
                           <TreeItem
-                            nodeId={l + "-" + i+2+"-"}
+                            nodeId={l + "-" + i + 2 + "-"}
                             label={
                               <div
-                            
+
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
@@ -402,7 +494,7 @@ const EditPackage = () => {
                                 nodeId={p.name + "-" + v}
                                 label={
                                   <div
-                                   
+
                                     className="sigle-line"
                                   >
                                     <p
@@ -439,10 +531,10 @@ const EditPackage = () => {
                       } else if (i === 3) {
                         return (
                           <TreeItem
-                            nodeId={l + "-" + i+3+"-"}
+                            nodeId={l + "-" + i + 3 + "-"}
                             label={
                               <div
-                             
+
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
@@ -471,7 +563,7 @@ const EditPackage = () => {
                                 nodeId={p.name + "-" + v}
                                 label={
                                   <div
-                                   
+
                                     className="sigle-line"
                                   >
                                     <p
@@ -508,10 +600,10 @@ const EditPackage = () => {
                       } else if (i === 4) {
                         return (
                           <TreeItem
-                            nodeId={l + "-" + i+4+"-"}
+                            nodeId={l + "-" + i + 4 + "-"}
                             label={
                               <div
-                              key={l + "-" + i+"-"+4}
+                                key={l + "-" + i + "-" + 4}
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
@@ -540,7 +632,7 @@ const EditPackage = () => {
                                 nodeId={p.propertyName + "-" + v}
                                 label={
                                   <div
-                                    key={p.propertyName + "-" + v+"-"}
+                                    key={p.propertyName + "-" + v + "-"}
                                     className="sigle-line"
                                   >
                                     <p
@@ -577,10 +669,10 @@ const EditPackage = () => {
                       } else if (i === 5) {
                         return (
                           <TreeItem
-                            nodeId={l + "-" + i+5+"-"}
+                            nodeId={l + "-" + i + 5 + "-"}
                             label={
                               <div
-                             
+
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
@@ -609,7 +701,7 @@ const EditPackage = () => {
                                 nodeId={p.companyName + "-" + v}
                                 label={
                                   <div
-                                    key={p.companyName + "-" + v+"-"}
+                                    key={p.companyName + "-" + v + "-"}
                                     className="sigle-line"
                                   >
                                     <p
@@ -646,10 +738,10 @@ const EditPackage = () => {
                       } else if (i === 6) {
                         return (
                           <TreeItem
-                            nodeId={l + "-" + i+6+"-"}
+                            nodeId={l + "-" + i + 6 + "-"}
                             label={
                               <div
-                            
+
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
@@ -678,7 +770,7 @@ const EditPackage = () => {
                                 nodeId={p.bankName + "-" + v}
                                 label={
                                   <div
-                                    
+
                                     className="sigle-line"
                                   >
                                     <p
@@ -757,6 +849,49 @@ const EditPackage = () => {
               )}
             </div>
           </div>
+
+
+          <div className={`modal ${openPostModal ? "is-active" : ""}`}>
+            <div className="modal-background"></div>
+            <div className="modal-content">
+              <div className="icon-outer">
+                <ThumbUpAltIcon height="2rem" width="2rem" />
+              </div>
+              <p className="title is-5">
+                Do you want to Confirm this Status?
+              </p>
+              <div className="delete-footer">
+                <button
+                  className="button is-danger"
+                  onClick={handleOnChangeStatus}
+
+                >
+                  Confirm
+                </button>
+
+                <button
+                  className="button is-warning"
+                  onClick={() => {
+                    setOpenPostModal((modal) => !modal);
+                    selectOption("")
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+            <button
+              className="modal-close is-large"
+              aria-label="close"
+              onClick={() => {
+                setOpenPostModal((modal) => !modal);
+                selectOption("")
+              }}
+            ></button>
+          </div>
+
+
+
         </div>
       )}
     </React.Fragment>
