@@ -4,8 +4,6 @@ import {
   InputLabel,
   MenuItem,
   Select,
-
-
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
@@ -22,7 +20,7 @@ import lottie from "lottie-web";
 import loadingAnim from "../../../static/working.json";
 import { toast, ToastContainer } from "react-toastify";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 
 const defaultPackages = [
   "Employment",
@@ -35,9 +33,8 @@ const defaultPackages = [
 ];
 const EditPackage = () => {
   const [openPostModal, setOpenPostModal] = useState(false);
-  const [selectOption, setSelectOption] = useState("")
+  const [selectOption, setSelectOption] = useState("");
   const [dropDownList, setDropDownList] = useState([]);
-
 
   const [list, setList] = useState([[]]);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,18 +46,14 @@ const EditPackage = () => {
   const params = useParams();
   const axiosPrivate = useAxiosPrivate();
   const [status, setStatus] = useState(0);
-  const [taxYear, setTaxYear] = useState();
-  const [serialNo, setSerialNo] = useState();
-
+  const [taxYear, setTaxYear] = useState('');
+  const [serialNo, setSerialNo] = useState('');
 
   //console.log("status", status)
 
-
-
   useEffect(() => {
-
     const element = document.querySelector("#loading");
-    console.log("element", element)
+    
     if (element) {
       lottie.loadAnimation({
         container: element,
@@ -70,26 +63,20 @@ const EditPackage = () => {
         autoplay: true, // boolean
       });
     }
-  }, []);
-
+  }, [loading]);
 
   // for the drop down list
 
   const getOptionData = async () => {
-
-    try {
+   
       const response = await axiosPrivate.get(
-        'http://tax.api.cyberozunu.com/api/v1.1/Configuration/order-status'
+        "http://tax.api.cyberozunu.com/api/v1.1/Configuration/order-status"
       );
       setDropDownList(response.data.result);
-    } catch (err) {
-      console.error(err);
-    }
   };
 
   const getData = async () => {
-    setIsLoading(true);
-    try {
+   
       const response = await axiosPrivate.get(
         `https://tax.api.cyberozunu.com/api/v1.1/Order/${params.orderId}`
       );
@@ -98,34 +85,32 @@ const EditPackage = () => {
       //console.log("result", response.data.result);
       setTaxYear(response.data.result.taxYear);
       setStatus(response.data.result.status);
-      setSerialNo(response.data.result.serialNo)
-      setIsLoading(false);
-    } catch (err) {
-      console.error(err);
-      // navigate('/', { state: { from: location }, replace: true });
-      setIsLoading(false);
-    }
+      setSerialNo(response.data.result.serialNo);
+     
   };
 
   useEffect(() => {
     if (params.orderId) {
-
-      getData();
-      getOptionData();
-
+      try {
+        setIsLoading(true);
+        (async() => {
+            await Promise.all([getData(),getOptionData()]);
+            setIsLoading(false);
+        })()
+      } catch (error) {
+        setIsLoading(false);
+        console.log(error);
+      }
     } else {
       navigate("/");
     }
-
-  }, []);
+  }, [params.orderId]);
 
   const handleChange = (e) => {
     setSelectOption(e.target.value);
     setOpenPostModal(true);
     setStatus(e.target.value);
-
-  }
-
+  };
 
   const ColoredLine = ({ color }) => (
     <hr
@@ -139,7 +124,8 @@ const EditPackage = () => {
 
   const hanclickEdit = (id, packageName) => {
     navigate(
-      `/${packageName.toLowerCase().replace(/\s/g, "")}/${params.orderId
+      `/${packageName.toLowerCase().replace(/\s/g, "")}/${
+        params.orderId
       }/?packageId=${id}`
     );
   };
@@ -151,11 +137,7 @@ const EditPackage = () => {
   };
 
   const hanclickDelete = (id, packageName) => {
-    // navigate(
-    //   `/${packageName.toLowerCase().replace(/\s/g, "")}/${
-    //     params.orderId
-    //   }/?packageId=${id}`
-    // );
+   
     setDeletepackage(packageName);
     setDeletepackageId(id);
     setDeleteModal(true);
@@ -224,33 +206,28 @@ const EditPackage = () => {
   };
 
   const handleOnChangeStatus = async () => {
-
-    setLoading(true);
+    setIsLoading(true);
 
     try {
-      const response = await axiosPrivate.post(`http://tax.api.cyberozunu.com/api/v1.1/Order/update-status/${params.orderId}?status=${selectOption}`);
+      await axiosPrivate.post(
+        `http://tax.api.cyberozunu.com/api/v1.1/Order/update-status/${params.orderId}?status=${selectOption}`
+      );
       toast.success(`Status Updated Successfully`);
 
-      setLoading(false);
+      setIsLoading(false);
       setOpenPostModal(false);
       setSelectOption("");
       //getOptionData();
-
-    }
-
-    catch (err) {
+    } catch (err) {
       console.error(err);
-      setLoading(false);
+      setIsLoading(false);
       setOpenPostModal(false);
       setSelectOption("");
       if (err.response.data.isError) {
         toast.error(err.response.data.error.detail);
       }
     }
-
-  }
-
-
+  };
 
   return (
     <React.Fragment>
@@ -264,44 +241,52 @@ const EditPackage = () => {
           )}
         </React.Fragment>
       ) : (
-
         <div className="EditPackage">
           <div className="tax-edit-package">
             <div className="back-button" onClick={() => navigate(-1)}>
               <ArrowBackIosNewIcon className="back-icon" />
-              <h5 className="title is-5">Back</h5> 
-            </div>  
+              <h5 className="title is-5">Back</h5>
+            </div>
             <div>
-              <h5 className="title is-3 header" >
-               #{serialNo} { taxYear ? `(Tax Year ${taxYear})` : ""}
-            </h5>
-              </div>         
+              <h5 className="title is-3 header">
+                #{serialNo} {taxYear ? `(Tax Year ${taxYear})` : ""}
+              </h5>
+            </div>
           </div>
-        
+
           <div className="heading-edit-package">
-            <p className="title is-3 header" alignItems="center" justifyContent="center">Update Status: </p>  
+            <p
+              className="title is-3 header"
+              alignItems="center"
+              justifyContent="center"
+            >
+              Update Status:{" "}
+            </p>
             <div>
-            <FormControl size="medium" sx={{ width: 250 }}>
-              <InputLabel id="demo-simple-select-label">{"Status"}</InputLabel>
+              <FormControl size="medium" sx={{ width: 250 }}>
+                <InputLabel id="demo-simple-select-label">
+                  {"Status"}
+                </InputLabel>
 
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={status}
-                label="Status"
-                onChange={handleChange}
-              >
-
-                {/* { <MenuItem value={'active'}>Active</MenuItem>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={status}
+                  label="Status"
+                  onChange={handleChange}
+                >
+                  {/* { <MenuItem value={'active'}>Active</MenuItem>
               <MenuItem value={'inactive'}>Inactive</MenuItem>} */}
 
-                {dropDownList.map(item => <MenuItem key={item.id} value={item.id}>{item.values}</MenuItem>)}
-
-              </Select>
-            </FormControl>
-            </div>     
+                  {dropDownList.map((item) => (
+                    <MenuItem key={item.id} value={item.id}>
+                      {item.values}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
           </div>
-
 
           <div className="content-wrapper-1">
             <div className="cards-grid-1 container">
@@ -396,7 +381,6 @@ const EditPackage = () => {
                             nodeId={l + "-" + i + 1 + "-"}
                             label={
                               <div
-
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
@@ -424,10 +408,7 @@ const EditPackage = () => {
                               <TreeItem
                                 nodeId={p.name + "-" + v}
                                 label={
-                                  <div
-
-                                    className="sigle-line"
-                                  >
+                                  <div className="sigle-line">
                                     <p
                                       style={{
                                         padding: "0.5rem",
@@ -465,7 +446,6 @@ const EditPackage = () => {
                             nodeId={l + "-" + i + 2 + "-"}
                             label={
                               <div
-
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
@@ -493,10 +473,7 @@ const EditPackage = () => {
                               <TreeItem
                                 nodeId={p.name + "-" + v}
                                 label={
-                                  <div
-
-                                    className="sigle-line"
-                                  >
+                                  <div className="sigle-line">
                                     <p
                                       style={{
                                         padding: "0.5rem",
@@ -534,7 +511,6 @@ const EditPackage = () => {
                             nodeId={l + "-" + i + 3 + "-"}
                             label={
                               <div
-
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
@@ -562,10 +538,7 @@ const EditPackage = () => {
                               <TreeItem
                                 nodeId={p.name + "-" + v}
                                 label={
-                                  <div
-
-                                    className="sigle-line"
-                                  >
+                                  <div className="sigle-line">
                                     <p
                                       style={{
                                         padding: "0.5rem",
@@ -672,7 +645,6 @@ const EditPackage = () => {
                             nodeId={l + "-" + i + 5 + "-"}
                             label={
                               <div
-
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
@@ -741,7 +713,6 @@ const EditPackage = () => {
                             nodeId={l + "-" + i + 6 + "-"}
                             label={
                               <div
-
                                 style={{
                                   display: "flex",
                                   flexDirection: "row",
@@ -769,10 +740,7 @@ const EditPackage = () => {
                               <TreeItem
                                 nodeId={p.bankName + "-" + v}
                                 label={
-                                  <div
-
-                                    className="sigle-line"
-                                  >
+                                  <div className="sigle-line">
                                     <p
                                       style={{
                                         padding: "0.5rem",
@@ -850,21 +818,18 @@ const EditPackage = () => {
             </div>
           </div>
 
-
           <div className={`modal ${openPostModal ? "is-active" : ""}`}>
             <div className="modal-background"></div>
             <div className="modal-content">
               <div className="icon-outer">
                 <ThumbUpAltIcon height="2rem" width="2rem" />
               </div>
-              <p className="title is-5">
-                Do you want to Confirm this Status?
-              </p>
+              <p className="title is-5">Do you want to Confirm this Status?</p>
               <div className="delete-footer">
                 <button
                   className="button is-danger"
                   onClick={handleOnChangeStatus}
-
+                  disabled={isLoading}
                 >
                   Confirm
                 </button>
@@ -873,8 +838,9 @@ const EditPackage = () => {
                   className="button is-warning"
                   onClick={() => {
                     setOpenPostModal((modal) => !modal);
-                    selectOption("")
+                    selectOption("");
                   }}
+                  disabled={isLoading}
                 >
                   Cancel
                 </button>
@@ -885,13 +851,12 @@ const EditPackage = () => {
               aria-label="close"
               onClick={() => {
                 setOpenPostModal((modal) => !modal);
-                selectOption("")
+                selectOption("");
+                
               }}
+              disabled={isLoading}
             ></button>
           </div>
-
-
-
         </div>
       )}
     </React.Fragment>
