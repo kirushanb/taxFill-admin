@@ -72,7 +72,7 @@ const EditPackage = () => {
       const response = await axiosPrivate.get(
         "http://tax.api.cyberozunu.com/api/v1.1/Configuration/order-status"
       );
-      setDropDownList(response.data.result);
+     setDropDownList(response.data.result);
   };
 
   const getData = async () => {
@@ -249,7 +249,7 @@ const EditPackage = () => {
             </div>
             <div>
               <h5 className="title is-3 header">
-                #{serialNo} {taxYear ? `(Tax Year ${taxYear})` : ""}
+                #{serialNo} {taxYear ? `(Tax Year ${taxYear})` : ""} 
               </h5>
             </div>
           </div>
@@ -821,13 +821,13 @@ const EditPackage = () => {
           <div className={`modal ${openPostModal ? "is-active" : ""}`}>
             <div className="modal-background"></div>
             <div className="modal-content">
-              <div className="icon-outer">
+              <div className="icon-outer-success">
                 <ThumbUpAltIcon height="2rem" width="2rem" />
               </div>
               <p className="title is-5">Do you want to Confirm this Status?</p>
               <div className="delete-footer">
                 <button
-                  className="button is-danger"
+                  className="button is-success"
                   onClick={handleOnChangeStatus}
                   disabled={isLoading}
                 >
