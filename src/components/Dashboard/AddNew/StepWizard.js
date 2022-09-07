@@ -177,7 +177,7 @@ export default function StepWizard() {
         >
           <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
             <Typography>
-              Select your preffered method of prgress notification:
+              Select your preferred method of progress notification:
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -219,7 +219,7 @@ export default function StepWizard() {
           onChange={handleChange3("panel3")}
         >
           <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-            <Typography>Select your preffered method of payment</Typography>
+            <Typography>Select your preferred method of payment</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <div className="box">
@@ -265,11 +265,11 @@ export default function StepWizard() {
                  
                 )}
                 {checkedEmail && 
-                              <div className="total"><p className="title is-6">{"Email notitification"}</p><p className="title is-6 free">{"Free of cost"}</p></div>
+                              <div className="total"><p className="title is-6">{"Email notification"}</p><p className="title is-6 free">{"Free of cost"}</p></div>
 
                 }
                 {checkedSMS && 
-                              <div className="total"><p className="title is-6">{"SMS notitification"}</p><p className="title is-6">{"£5"}</p></div>
+                              <div className="total"><p className="title is-6">{"SMS notification"}</p><p className="title is-6">{"£5"}</p></div>
 
                 }
                 <div className="total-last">
