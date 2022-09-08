@@ -9,6 +9,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import RouteToPackage from './AddNew/RouteToPackage';
 
 export const mainListItems = (
   <React.Fragment>
@@ -16,8 +17,17 @@ export const mainListItems = (
       <ListItemIcon >
         <DashboardIcon />
       </ListItemIcon>
-      <ListItemText primary="Dashboard" />
+      <ListItemText primary="Dashboard" />  
     </ListItemButton>
+
+    <ListItemButton  >
+      <ListItemIcon>
+        <LayersIcon />
+      </ListItemIcon>
+      <ListItemText primary="Packages" />
+      <RouteToPackage />
+    </ListItemButton>
+    
     {/* <ListItemButton>
       <ListItemIcon>
         <ShoppingCartIcon />

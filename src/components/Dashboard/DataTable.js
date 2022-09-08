@@ -89,9 +89,10 @@ function createData(
   packages,
   customerName,
   nI_Number,
+  status,
   options
 ) {
-  return { orderID, timeDAte, packages, customerName, nI_Number, options };
+  return { orderID, timeDAte, packages, customerName, nI_Number, status, options };
 }
 
 // const rows = [
@@ -117,7 +118,7 @@ export default function DataTable() {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
+  const [statusList, setStatusList] = React.useState([]);
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -156,28 +157,36 @@ export default function DataTable() {
     const getData = async () => {
       setLoading(true);
       try {
+        const response1 = await axiosPrivate.get(
+          "http://tax.api.cyberozunu.com/api/v1.1/Configuration/order-status"
+        );
+        
+        setStatusList(response1.data.result);
         const response = await axiosPrivate.get(
           "https://tax.api.cyberozunu.com/api/v1.1/Order"
         );
+        
         const filtered = [
           ...response.data.result.data.map((n, k) =>
             createData(
               n.serialNo,
               moment(n.createdOn).format("DD/MM/YYYY, HH:mm:ss"),
               n.selectedPackages.map((p) => " " + p.package.name).join(","),
-              <p className="customer-name" onClick={() => handleOnClickShowCustomer(n?.customer)}>{`${n?.customer?.firstName ? n?.customer?.firstName : ""} ${
+              <p key={n.serialNo + "-" + k+ 1} className="customer-name" onClick={() => handleOnClickShowCustomer(n?.customer)}>{`${n?.customer?.firstName ? n?.customer?.firstName : ""} ${
                 n?.customer?.lastName ? n?.customer?.lastName : ""
               }`}</p>
               ,
               n?.customer?.nI_Number,
-              <div id={n.serialNo + "-" + k} style={{ width: "300px" }}>
-                <button
+              response1?.data?.result?.find(l=> l.id===n?.status)?.values ?? '-'
+              ,
+              <div key={n.serialNo + "-" + k} id={n.serialNo + "-" + k} style={{ width: "100px" }}>
+                {/* <button
                   onClick={() => null}
                   className="button is-info is-small"
                 >
                   <AddchartIcon />
                   <p style={{ marginLeft: "0.5rem" }}>{"Update Status"}</p>
-                </button>
+                </button> */}
                 <button
                   style={{ marginLeft: "0.5rem" }}
                   onClick={() => handleOnClickEditData(n.id)}

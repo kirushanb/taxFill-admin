@@ -23,6 +23,7 @@ import EditPackage from "./components/Dashboard/EditPackage/EditPackage";
 import RentalIncome from "./components/Dashboard/PackageForms/RentalIncome";
 import Dividend from "./components/Dashboard/PackageForms/Dividend";
 import BankInterest from "./components/Dashboard/PackageForms/BankInterest";
+import PackageList from "./components/Dashboard/AddNew/PackageList";
 
 
 function App() {
@@ -258,6 +259,16 @@ function App() {
         </Route>
         <Route path="*" element={<Navigate to="/bankinterest" replace />} />
       </Route>
+      <Route element={<RequireAuth />}>
+        <Route
+          path="/packageList"
+          element={
+            <Layout>
+              <PackageList/>
+            </Layout>
+          }
+        />
+        </Route>
     </Routes>
   );
 }
