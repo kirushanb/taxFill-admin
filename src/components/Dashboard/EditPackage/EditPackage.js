@@ -70,9 +70,9 @@ const EditPackage = () => {
   const getOptionData = async () => {
    
       const response = await axiosPrivate.get(
-        "http://tax.api.cyberozunu.com/api/v1.1/Configuration/order-status"
+        "https://tax.api.cyberozunu.com/api/v1.1/Configuration/order-status"
       );
-     setDropDownList(response.data.result);
+      setDropDownList(response.data.result);
   };
 
   const getData = async () => {
@@ -210,7 +210,7 @@ const EditPackage = () => {
 
     try {
       await axiosPrivate.post(
-        `http://tax.api.cyberozunu.com/api/v1.1/Order/update-status/${params.orderId}?status=${selectOption}`
+        `https://tax.api.cyberozunu.com/api/v1.1/Order/update-status/${params.orderId}?status=${selectOption}`
       );
       toast.success(`Status Updated Successfully`);
 
@@ -249,7 +249,7 @@ const EditPackage = () => {
             </div>
             <div>
               <h5 className="title is-3 header">
-                #{serialNo} {taxYear ? `(Tax Year ${taxYear})` : ""} 
+                #{serialNo} {taxYear ? `(Tax Year ${taxYear})` : ""}
               </h5>
             </div>
           </div>
