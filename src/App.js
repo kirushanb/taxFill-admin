@@ -24,6 +24,7 @@ import RentalIncome from "./components/Dashboard/PackageForms/RentalIncome";
 import Dividend from "./components/Dashboard/PackageForms/Dividend";
 import BankInterest from "./components/Dashboard/PackageForms/BankInterest";
 import PackageList from "./components/Dashboard/AddNew/PackageList";
+import ConfigurationList from "./components/Dashboard/AddNew/ConfigurationList";
 
 
 function App() {
@@ -265,6 +266,17 @@ function App() {
           element={
             <Layout>
               <PackageList/>
+            </Layout>
+          }
+        />
+        </Route>
+
+        <Route element={<RequireAuth />}>
+        <Route
+          path="/configuration"
+          element={
+            <Layout>
+              <ConfigurationList/>
             </Layout>
           }
         />

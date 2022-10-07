@@ -10,6 +10,8 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import RouteToPackage from './AddNew/RouteToPackage';
+import RouteToConfig from './AddNew/RouteToConfig'
+import MoneyIcon from '@mui/icons-material/Money';
 
 export const mainListItems = (
   <React.Fragment>
@@ -26,6 +28,14 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Packages" />
       <RouteToPackage />
+    </ListItemButton>
+
+    <ListItemButton  >
+      <ListItemIcon>
+        <MoneyIcon />
+      </ListItemIcon>
+      <ListItemText primary="Configuration" />
+      <RouteToConfig/>
     </ListItemButton>
     
     {/* <ListItemButton>

@@ -1,0 +1,84 @@
+.ConfigurationList{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    // height: 100vh;
+    background: #e5e5e5;
+    margin-top: -1rem;
+    align-self: center;
+    padding: 2rem;
+    text-align: center;
+    .back-button{
+        display: flex;
+        flex-direction: row;
+        gap:1rem;
+        margin-top: -3.5rem;
+        margin-bottom: 2rem;
+        margin-left: -2rem;
+        cursor: pointer;
+    }
+    .item{
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+
+    }
+      
+    form{
+        border-radius: 1rem;
+        background: white;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        width: 50rem;
+        align-self: center;
+        padding: 2rem 1rem;
+
+        .MuiAvatar-root{
+            align-self: center;
+            background-color: #202332;
+        }
+
+        .title{
+            align-self: center;
+        }
+        input{
+            width: 100% !important;
+        }
+
+        .MuiFormControl-root{
+            textarea{
+                height: 106px !important;
+            }
+        }
+
+        .MuiBox-root.css-1sasres{
+                svg{
+                    fill:#202332;
+                }
+                button{
+                    background-color: #49c68d;
+                }
+        }
+
+        .footer-save-button{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            width: 100%;
+           
+            button{
+                margin: 0 1rem;
+                box-sizing: border-box;
+                width: fit-content;
+                align-self: center;
+                svg{
+                    margin-right: 0.5rem;
+                }
+            }
+            
+        }
+      
+    }
+
+}
