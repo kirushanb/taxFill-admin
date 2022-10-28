@@ -7,25 +7,24 @@ import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { AccountCircle } from "@mui/icons-material";
 import { Menu, MenuItem } from "@mui/material";
 import "./Dashboard.scss";
-import DataTable from "./DataTable";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PackageList from "./AddNew/PackageList";
 import ToolbarList from "./AddNew/ToolbarList";
-import lottie from "lottie-web";
-import loadingAnim from "../../static/working.json";
+import lottie from 'lottie-web'
+import loadingAnim from '../../../src/static/working.json'
+
 function Copyright(props) {
   return (
+ 
     <Typography
       variant="body2"
       color="text.secondary"
@@ -92,16 +91,34 @@ function DashboardContent() {
   const [open, setOpen] = React.useState(false);
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [modal, setModal] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
   const navigate = useNavigate();
-
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+  const [loading, setLoading] = React.useState(true)
+
+  
+React.useEffect(() => {
+  const element = document.querySelector("#loading");
+  if (element) {
+    lottie.loadAnimation({
+      container: element,
+      animationData: loadingAnim,
+      renderer: "svg", // "canvas", "html"
+      loop: true, // boolean
+      autoplay: true, // boolean
+    });
+  }
+}, [loading]);
 
 
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
+React.useEffect(()=> {
+  const loadPage = async ()=> {
+    await new Promise((r) => setTimeout(r,2000));
+    setLoading((loading) => !loading)
+   
+  }
+  loadPage();
+
+},[])
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -112,11 +129,8 @@ function DashboardContent() {
   };
   const toggleDrawer = () => {
     setOpen(!open);
+  
   };
-
-  const handleAddNew = () => {
-    setModal(true)
-  }
 
   const handleLogout = () => {
     // toast("User Logged Out Successfully");
@@ -126,40 +140,6 @@ function DashboardContent() {
     });
    window.location.href='/'
   }
-  React.useEffect( () => {
-   
-    if(cookies.order){
-      removeCookie("order");
-   
-    }
-   
-
-  },[])
-
-  React.useEffect(() => {
-    const element = document.querySelector("#loading");
-    if (element) {
-      lottie.loadAnimation({
-        container: element,
-        animationData: loadingAnim,
-        renderer: "svg", // "canvas", "html"
-        loop: true, // boolean
-        autoplay: true, // boolean
-      });
-    }
-  }, [loading]);
-
-  React.useEffect(() => {
-
-    const loadPage = async() => {
-      await new Promise((r) => setTimeout(r,2000));
-      setLoading((loading) => !loading)
-    }
-    loadPage();
-
-  },[])
-  
- 
   return (
     <React.Fragment>
     <ToastContainer />
@@ -169,7 +149,7 @@ function DashboardContent() {
     <>
       <Box sx={{ display: "flex" }}>
       <ToastContainer />
-        <CssBaseline />
+        <CssBaseline />    
         <AppBar
           position="absolute"
           open={open}
@@ -179,6 +159,7 @@ function DashboardContent() {
             sx={{
               pr: "24px", // keep right padding when drawer closed
             }}
+            
           >
             <IconButton
               edge="start"
@@ -231,13 +212,14 @@ function DashboardContent() {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  {/* <MenuItem onClick={handleProfile}>Profile</MenuItem> */}
+                   {/* <MenuItem onClick={handleProfile}>Profile</MenuItem> */}
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </div>
             )}
           </Toolbar>
-        </AppBar>
+        </AppBar> 
+        
         <Drawer variant="permanent" open={open} style={{ border: "#2a2d3e" }}>
           <Toolbar
             sx={{
@@ -248,13 +230,11 @@ function DashboardContent() {
             }}
             style={{ background: "#2a2d3e", borderColor: "#2a2d3e" }}
           >
-           
             <IconButton onClick={toggleDrawer} onMouseEnter={toggleDrawer}>
               <ChevronLeftIcon />
             </IconButton>
           </Toolbar>
-          
-          <ToolbarList />
+            <ToolbarList />
         </Drawer>
         <Box
           component="main"
@@ -268,38 +248,17 @@ function DashboardContent() {
             overflow: "auto",
           }}
         >
-          <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={4}>
-              <Grid item xs={12} md={12} lg={12}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                    borderRadius: "1rem",
-                  }}
-                >
-                  <div className="header-button">
-                    <p className="title is-4">Orders</p>
-                  </div>
-                  <div className="data-table">
-                    <DataTable />
-                  </div>
-                </Paper>
-              </Grid>
 
-              
-            </Grid>
-           
-          </Container>
+          <Toolbar />
+          <PackageList/>
         </Box>
       </Box>
     </>}
-    </React.Fragment>
+   </React.Fragment>
+
   );
 }
 
-export default function Dashboard() {
+export default function PackageListLayout() {
   return <DashboardContent />;
 }

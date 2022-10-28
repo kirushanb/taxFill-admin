@@ -70,7 +70,7 @@ const EditPackage = () => {
   const getOptionData = async () => {
    
       const response = await axiosPrivate.get(
-        "http://tax.api.cyberozunu.com/api/v1.1/Configuration/order-status"
+        "https://tax.api.cyberozunu.com/api/v1.1/Configuration/order-status"
       );
      setDropDownList(response.data.result);
   };

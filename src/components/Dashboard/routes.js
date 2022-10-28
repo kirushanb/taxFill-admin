@@ -9,13 +9,11 @@ import PeopleIcon from '@mui/icons-material/People';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import RouteToPackage from './AddNew/RouteToPackage';
-import RouteToConfig from './AddNew/RouteToConfig'
 import MoneyIcon from '@mui/icons-material/Money';
 
 export const mainListItems = (
   <React.Fragment>
-    <ListItemButton selected sx={{borderRadius:"1rem", background:"red"}}>
+    {/* <ListItemButton selected sx={{borderRadius:"1rem", background:"red"}}>
       <ListItemIcon >
         <DashboardIcon />
       </ListItemIcon>
@@ -37,7 +35,7 @@ export const mainListItems = (
       <ListItemText primary="Configuration" />
       <RouteToConfig/>
     </ListItemButton>
-    
+     */}
     {/* <ListItemButton>
       <ListItemIcon>
         <ShoppingCartIcon />
