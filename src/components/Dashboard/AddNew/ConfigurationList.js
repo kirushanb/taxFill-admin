@@ -107,9 +107,9 @@ export default function ConfigurationList() {
     }, []);
 
     const onTextChange = (value, index) => {
-        let updatedPackages = [...packages]
-        updatedPackages[index].value = value
-        setPackages(updatedPackages)
+        let updatedPackages = [...packages];
+        updatedPackages[index].value = value;
+        setPackages(updatedPackages);
 
     }
 
@@ -121,7 +121,7 @@ export default function ConfigurationList() {
                     <ArrowBackIosNewIcon className="back-icon" />
                     <h5 className="title is-5">Back</h5>
                 </div>
-                <h3 className='title is-5'>Price of Configuration</h3>
+                <h3 className='title is-5'>Configuration</h3>
 
                 <Box sx={{
                     display: "flex",
@@ -131,14 +131,14 @@ export default function ConfigurationList() {
                 }}>
 
                     <Stack spacing={2}>
-                        <List sx={{ width: '50', textAlign: 'left', maxWidth: 480, bgcolor: 'background.paper' }}>
+                        <List sx={{ width: '50', textAlign: 'left', maxWidth: 700, bgcolor: 'background.paper' }}>
                             {packages.map((singlePackage, index) => (
                                 <Item className='item'>
                                     <ListItem
                                         key={singlePackage.id}
                                         disableGutters>
 
-                                        <ListItemText primary={`${singlePackage.name} Package `} />
+                                       <ListItemText primary={`${singlePackage.name} Package `} />
                                         <TextField
                                             id="outlined-size-small"
                                             sx={{
@@ -156,7 +156,7 @@ export default function ConfigurationList() {
                                             className="button is-success"
                                             disabled={loading && selectedPackage.id === singlePackage.id}
                                         >
-                                            
+                                           
                                             {loading && selectedPackage.id === singlePackage.id ? 'Updating' : 'Update'}
                                         </button>
                                     </ListItem>
