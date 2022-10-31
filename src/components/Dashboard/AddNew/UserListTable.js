@@ -60,7 +60,7 @@ function UserListTable({ tableData }) {
                                         <td>{data.lastName}</td>
                                         <td>{data.email}</td>
                                         <td>{data.userName}</td>
-                                        <td>{data.phone}</td>
+                                        <td>{data.phoneNumber}</td>
 
                                     </tr>
                                 )
