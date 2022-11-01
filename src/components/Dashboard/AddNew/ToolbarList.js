@@ -7,10 +7,10 @@ import LayersIcon from '@mui/icons-material/Layers';
 import MoneyIcon from '@mui/icons-material/Money';
 import List from "@mui/material/List";
 import { useNavigate } from "react-router-dom";
-import PackageList from './PackageList';
-import ConfigurationList from './ConfigurationList';
-import { Dashboard } from '@mui/icons-material';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
+
+
 
 const ToolbarList = () => {
     const navigate = useNavigate();
@@ -23,7 +23,6 @@ const ToolbarList = () => {
                         <DashboardIcon />
                     </ListItemIcon>
                     <ListItemText primary="Dashboard" >
-                        <Dashboard/>
                     </ListItemText>
                 </ListItemButton>
 
@@ -33,8 +32,6 @@ const ToolbarList = () => {
                         <LayersIcon />
                     </ListItemIcon>
                     <ListItemText primary="Packages">
-                    <PackageList />
-
                     </ListItemText>
                 </ListItemButton>
 
@@ -43,7 +40,6 @@ const ToolbarList = () => {
                         <MoneyIcon />
                     </ListItemIcon>
                     <ListItemText primary="Configuration" >
-                    <ConfigurationList />
                     </ListItemText>
                 </ListItemButton>
 
@@ -52,10 +48,18 @@ const ToolbarList = () => {
                         <PersonAddAlt1Icon />
                     </ListItemIcon>
                     <ListItemText primary="New User" >
-                    <ConfigurationList />
+                    </ListItemText>
+                </ListItemButton>
+
+            <ListItemButton  onClick={() => navigate("/changeUserHistory")}>
+                    <ListItemIcon>
+                        <ContentPasteSearchIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Customer History" >
                     </ListItemText>
                 </ListItemButton>
             </List>
+
 
         </div>
     )
