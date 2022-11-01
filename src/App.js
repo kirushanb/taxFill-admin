@@ -28,6 +28,7 @@ import Dividend from "./components/Dashboard/PackageForms/Dividend";
 import BankInterest from "./components/Dashboard/PackageForms/BankInterest";
 import PackageList from "./components/Dashboard/AddNew/PackageList";
 import ConfigurationList from "./components/Dashboard/AddNew/ConfigurationList";
+import ChangeUserHistoryLayout from "./components/Dashboard/ChangeUserHistoryLayout";
 
 
 function App() {
@@ -291,6 +292,17 @@ function App() {
           }
         />
         </Route>
+
+        <Route element={<RequireAuth />}>
+        <Route
+          path="/changeUserHistory"
+          element={
+            <ChangeUserHistoryLayout />
+          
+          }
+        />
+        </Route>
+        
     </Routes>
   );
 }

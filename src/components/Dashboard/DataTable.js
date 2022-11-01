@@ -158,7 +158,7 @@ export default function DataTable() {
       setLoading(true);
       try {
         const response1 = await axiosPrivate.get(
-          "http://tax.api.cyberozunu.com/api/v1.1/Configuration/order-status"
+          "https://tax.api.cyberozunu.com/api/v1.1/Configuration/order-status"
         );
         
         setStatusList(response1.data.result);
