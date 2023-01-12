@@ -9,6 +9,8 @@ import List from "@mui/material/List";
 import { useNavigate } from "react-router-dom";
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
+import RateReviewIcon from '@mui/icons-material/RateReview';
+import PercentIcon from '@mui/icons-material/Percent';
 
 
 
@@ -56,6 +58,22 @@ const ToolbarList = () => {
                         <ContentPasteSearchIcon />
                     </ListItemIcon>
                     <ListItemText primary="Customer History" >
+                    </ListItemText>
+                </ListItemButton>
+
+            <ListItemButton  onClick={() => navigate("/rateBand")}>
+                    <ListItemIcon>
+                        <RateReviewIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary="Rate Band" >
+                    </ListItemText>
+                </ListItemButton>
+
+            <ListItemButton  onClick={() => navigate("/rateBandPercentage")}>
+                    <ListItemIcon>
+                        <PercentIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary="Rate Band Percentage" >
                     </ListItemText>
                 </ListItemButton>
             </List>

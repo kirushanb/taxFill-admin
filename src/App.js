@@ -29,6 +29,8 @@ import BankInterest from "./components/Dashboard/PackageForms/BankInterest";
 import PackageList from "./components/Dashboard/AddNew/PackageList";
 import ConfigurationList from "./components/Dashboard/AddNew/ConfigurationList";
 import ChangeUserHistoryLayout from "./components/Dashboard/ChangeUserHistoryLayout";
+import RateBandLayout from "./components/Dashboard/RateBandLayout";
+import RateBandPercentageLayout from "./components/Dashboard/RateBandPercentageLayout"
 
 
 function App() {
@@ -298,6 +300,26 @@ function App() {
           path="/changeUserHistory"
           element={
             <ChangeUserHistoryLayout />
+          
+          }
+        />
+        </Route>
+
+        <Route element={<RequireAuth />}>
+        <Route
+          path="/rateBand"
+          element={
+            <RateBandLayout />
+          
+          }
+        />
+        </Route>
+
+        <Route element={<RequireAuth />}>
+        <Route
+          path="/rateBandPercentage"
+          element={
+            <RateBandPercentageLayout />
           
           }
         />
