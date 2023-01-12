@@ -3,6 +3,9 @@ import { useCookies } from "react-cookie";
 import { Navigate, Route, Router, Routes } from "react-router-dom";
 import "./App.css";
 import Layout from "./components/Layout/Layout";
+import PackageListLayout from "./components/Dashboard/PackageListLayout";
+import ConfigurationListLayout from "./components/Dashboard/ConfigurationListLayout";
+import NewUserListLayout from "./components/Dashboard/NewUserListLayout";
 import OTP from "./components/Login/OTP/OTP";
 import useAuth from "./hooks/useAuth";
 import useRefreshToken from "./hooks/useRefreshToken";
@@ -24,6 +27,10 @@ import RentalIncome from "./components/Dashboard/PackageForms/RentalIncome";
 import Dividend from "./components/Dashboard/PackageForms/Dividend";
 import BankInterest from "./components/Dashboard/PackageForms/BankInterest";
 import PackageList from "./components/Dashboard/AddNew/PackageList";
+import ConfigurationList from "./components/Dashboard/AddNew/ConfigurationList";
+import ChangeUserHistoryLayout from "./components/Dashboard/ChangeUserHistoryLayout";
+import RateBandLayout from "./components/Dashboard/RateBandLayout";
+import RateBandPercentageLayout from "./components/Dashboard/RateBandPercentageLayout"
 
 
 function App() {
@@ -263,12 +270,61 @@ function App() {
         <Route
           path="/packageList"
           element={
-            <Layout>
-              <PackageList/>
-            </Layout>
+              <PackageListLayout/>
           }
         />
         </Route>
+
+        <Route element={<RequireAuth />}>
+        <Route
+          path="/configuration"
+          element={
+            <ConfigurationListLayout />
+          
+          }
+        />
+        </Route>
+
+        <Route element={<RequireAuth />}>
+        <Route
+          path="/newUser"
+          element={
+            <NewUserListLayout />
+          
+          }
+        />
+        </Route>
+
+        <Route element={<RequireAuth />}>
+        <Route
+          path="/changeUserHistory"
+          element={
+            <ChangeUserHistoryLayout />
+          
+          }
+        />
+        </Route>
+
+        <Route element={<RequireAuth />}>
+        <Route
+          path="/rateBand"
+          element={
+            <RateBandLayout />
+          
+          }
+        />
+        </Route>
+
+        <Route element={<RequireAuth />}>
+        <Route
+          path="/rateBandPercentage"
+          element={
+            <RateBandPercentageLayout />
+          
+          }
+        />
+        </Route>
+        
     </Routes>
   );
 }

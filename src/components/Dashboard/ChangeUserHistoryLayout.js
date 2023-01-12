@@ -7,23 +7,22 @@ import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { AccountCircle } from "@mui/icons-material";
 import { Menu, MenuItem } from "@mui/material";
 import "./Dashboard.scss";
-import DataTable from "./DataTable";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ConfigurationList from "./AddNew/ConfigurationList";
 import ToolbarList from "./AddNew/ToolbarList";
 import lottie from "lottie-web";
-import loadingAnim from "../../static/working.json";
+import loadingAnim from '../../static/working.json';
+import { useState } from "react";
+import ChangeUserHistory from "./AddNew/ChangeUserHistory";
 function Copyright(props) {
   return (
     <Typography
@@ -92,16 +91,11 @@ function DashboardContent() {
   const [open, setOpen] = React.useState(false);
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [modal, setModal] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
   const navigate = useNavigate();
-
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+  const [loading, setLoading] = useState(true)
 
 
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -114,9 +108,7 @@ function DashboardContent() {
     setOpen(!open);
   };
 
-  const handleAddNew = () => {
-    setModal(true)
-  }
+
 
   const handleLogout = () => {
     // toast("User Logged Out Successfully");
@@ -126,15 +118,6 @@ function DashboardContent() {
     });
    window.location.href='/'
   }
-  React.useEffect( () => {
-   
-    if(cookies.order){
-      removeCookie("order");
-   
-    }
-   
-
-  },[])
 
   React.useEffect(() => {
     const element = document.querySelector("#loading");
@@ -149,16 +132,16 @@ function DashboardContent() {
     }
   }, [loading]);
 
-  React.useEffect(() => {
-
+  React.useEffect(() =>{
     const loadPage = async() => {
       await new Promise((r) => setTimeout(r,2000));
-      setLoading((loading) => !loading)
+
+      setLoading((loading) => !loading);
     }
-    loadPage();
+    loadPage()
 
   },[])
-  
+
  
   return (
     <React.Fragment>
@@ -179,6 +162,7 @@ function DashboardContent() {
             sx={{
               pr: "24px", // keep right padding when drawer closed
             }}
+            
           >
             <IconButton
               edge="start"
@@ -231,13 +215,14 @@ function DashboardContent() {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  {/* <MenuItem onClick={handleProfile}>Profile</MenuItem> */}
+                   {/* <MenuItem onClick={handleProfile}>Profile</MenuItem> */}
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </div>
             )}
           </Toolbar>
-        </AppBar>
+        </AppBar> 
+        
         <Drawer variant="permanent" open={open} style={{ border: "#2a2d3e" }}>
           <Toolbar
             sx={{
@@ -252,8 +237,7 @@ function DashboardContent() {
             <IconButton onClick={toggleDrawer} onMouseEnter={toggleDrawer}>
               <ChevronLeftIcon />
             </IconButton>
-          </Toolbar>
-          
+          </Toolbar> 
           <ToolbarList />
         </Drawer>
         <Box
@@ -269,30 +253,8 @@ function DashboardContent() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={4}>
-              <Grid item xs={12} md={12} lg={12}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                    borderRadius: "1rem",
-                  }}
-                >
-                  <div className="header-button">
-                    <p className="title is-4">Orders</p>
-                  </div>
-                  <div className="data-table">
-                    <DataTable />
-                  </div>
-                </Paper>
-              </Grid>
+          <ChangeUserHistory/>
 
-              
-            </Grid>
-           
-          </Container>
         </Box>
       </Box>
     </>}
@@ -300,6 +262,6 @@ function DashboardContent() {
   );
 }
 
-export default function Dashboard() {
+export default function ChangeUserHistoryLayout() {
   return <DashboardContent />;
 }
