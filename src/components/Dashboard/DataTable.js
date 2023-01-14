@@ -21,6 +21,7 @@ import {
   TextField,
 } from "@mui/material";
 import {
+  PaidOutlined,
   PanoramaFishEyeOutlined,
   RemoveRedEye,
   Search,
@@ -131,6 +132,10 @@ export default function DataTable() {
     navigate(`/view/${id}`);
   };
 
+  const handleOnClickCalculateTax = React.useCallback((id) => {
+    navigate(`/calculate-tax/${id}`);
+  },[navigate]);
+
   const handleOnClickShowCustomer = (customer) => {
     setCustomerModal(true);
     setCustomer(customer);
@@ -144,7 +149,7 @@ export default function DataTable() {
         value.timeDAte.toLowerCase().includes(searchInput.toLowerCase()) ||
         value.packages.toLowerCase().includes(searchInput.toLowerCase()) ||
         String(value.orderID).toLowerCase().includes(searchInput.toLowerCase()) || 
-        value.customerName.toLowerCase().includes(searchInput.toLowerCase()) ||
+        value.customerName.props.children.toLowerCase().includes(searchInput.toLowerCase()) ||
         value.nI_Number.toLowerCase().includes(searchInput.toLowerCase())
       );
     });
@@ -203,6 +208,14 @@ export default function DataTable() {
                   <RemoveRedEye />
                   <p style={{ marginLeft: "0.5rem" }}>{"View Customer"}</p>
                 </button> */}
+                <button
+                  style={{ marginTop: "0.5rem" }}
+                  onClick={() => handleOnClickCalculateTax(n.id)}
+                  className="button is-danger is-small"
+                >
+                  <PaidOutlined />
+                  <p style={{ marginLeft: "0.5rem" }}>{"Calculate Tax"}</p>
+                </button>
               </div>
             )
           ),
