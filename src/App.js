@@ -31,6 +31,7 @@ import ConfigurationList from "./components/Dashboard/AddNew/ConfigurationList";
 import ChangeUserHistoryLayout from "./components/Dashboard/ChangeUserHistoryLayout";
 import RateBandLayout from "./components/Dashboard/RateBandLayout";
 import RateBandPercentageLayout from "./components/Dashboard/RateBandPercentageLayout"
+import CalculateTax from "./components/Dashboard/CalculateTax/CalculateTax";
 
 
 function App() {
@@ -59,6 +60,11 @@ function App() {
       <Route element={<RequireAuth />}>
         <Route path="/" element={<Dashboard />} />
       </Route>
+      <Route element={<RequireAuth />}>
+          <Route path="/calculate-tax/:orderId" element={ <Layout>
+                <CalculateTax />
+              </Layout>} />
+        </Route>
       <Route element={<RequireAuth />}>
         <Route
           path="/addnew"
