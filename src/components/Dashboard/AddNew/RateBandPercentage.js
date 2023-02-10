@@ -61,7 +61,7 @@ export default function RateBand() {
     try {
       setLoading(true);
       const response = await axiosPrivate.get(
-        `https://tax.api.cyberozunu.com/api/v1.1/RateBandPercentage/year/${year}/rate-band-tax-type/${valueType}`
+        `https://tax.api.cyberozunu.com/api/v1.1/RateBandPercentage/year/${year || currentYear}/rate-band-tax-type/${valueType || 1}`
       );
 
       if (response.data.result.length > 0 && valueType && year) {
@@ -228,7 +228,10 @@ export default function RateBand() {
 
   React.useEffect(() => {
     getType();
-  }, []);
+    if(selectedYear.$y !== null && incomeType !== null){
+    fetchData(selectedYear.$y,incomeType)
+    }
+  }, [selectedYear.$y,incomeType]);
 
   const axiosPrivate = useAxiosPrivate();
 
