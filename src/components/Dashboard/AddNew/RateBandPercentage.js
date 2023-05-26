@@ -44,17 +44,27 @@ export default function RateBand() {
   const [additional, setAdditional] = React.useState(undefined);
   const [normal, setNormal] = React.useState(undefined);
   const [incomeType, setIncomeType] = React.useState("");
+  // const [type,setType] = React.useState();
 
   const currentYear = new Date().getFullYear();
 
-  const fetchData = async (year, type) => {
+  const getType = async () => {
+    const responseType = await axiosPrivate.get(
+      `https://tax.api.cyberozunu.com/api/v1.1/Configuration/income-type`
+    );
+    // setType(responseType.data.result);
+    const valueType = responseType.data.result.map((typeValue) => typeValue.id);
+    console.log("incomeTypes", valueType);
+  };
+
+  const fetchData = async (year, valueType) => {
     try {
-        setLoading(true);
+      setLoading(true);
       const response = await axiosPrivate.get(
-        `https://tax.api.cyberozunu.com/api/v1.1/RateBandPercentage/year/${year}/rate-band-tax-type/${type}`
+        `https://tax.api.cyberozunu.com/api/v1.1/RateBandPercentage/year/${year || currentYear}/rate-band-tax-type/${valueType || 1}`
       );
 
-      if (response.data.result.length > 0 && type && year) {
+      if (response.data.result.length > 0 && valueType && year) {
         const list = response.data.result;
         const rateBands = list.reduce((acc, curr) => {
           acc[curr.rateBand] = curr.percentage;
@@ -70,9 +80,7 @@ export default function RateBand() {
         console.log(rateBands);
         console.log("list", list);
         setLoading(false);
-
       } else {
-        console.log("hhd");
         setData([]);
         setStarter(undefined);
         setBase(undefined);
@@ -80,39 +88,37 @@ export default function RateBand() {
         setAdditional(undefined);
         setNormal(undefined);
         setLoading(false);
-
       }
     } catch (error) {
       console.error(error);
       setLoading(false);
-
     }
   };
 
   const handleUpdate = async () => {
     let payLoad = [];
-    if (incomeType === 3) {
+    if (incomeType === 4) {
       payLoad = [
         {
           rateBand: 2,
           percentage: base,
-          rateBandTaxType: 3,
+          rateBandTaxType: 4,
           year: selectedYear.$y,
         },
         {
           rateBand: 3,
           percentage: higher,
-          rateBandTaxType: 3,
+          rateBandTaxType: 4,
           year: selectedYear.$y,
         },
         {
           rateBand: 5,
           percentage: normal,
-          rateBandTaxType: 3,
+          rateBandTaxType: 4,
           year: selectedYear.$y,
         },
       ];
-    } else if(incomeType === 1) {
+    } else if (incomeType === 1) {
       payLoad = [
         {
           rateBand: 1,
@@ -139,34 +145,60 @@ export default function RateBand() {
           year: selectedYear.$y,
         },
       ];
-    }else{
-        payLoad = [
-            {
-              rateBand: 1,
-              percentage: starter,
-              rateBandTaxType: 2,
-              year: selectedYear.$y,
-            },
-            {
-              rateBand: 2,
-              percentage: base,
-              rateBandTaxType: 2,
-              year: selectedYear.$y,
-            },
-            {
-              rateBand: 3,
-              percentage: higher,
-              rateBandTaxType: 2,
-              year: selectedYear.$y,
-            },
-            {
-              rateBand: 4,
-              percentage: additional,
-              rateBandTaxType: 2,
-              year: selectedYear.$y,
-            },
-          ];
-
+    } else if (incomeType === 2) {
+      payLoad = [
+        {
+          rateBand: 1,
+          percentage: starter,
+          rateBandTaxType: 2,
+          year: selectedYear.$y,
+        },
+        {
+          rateBand: 2,
+          percentage: base,
+          rateBandTaxType: 2,
+          year: selectedYear.$y,
+        },
+        {
+          rateBand: 3,
+          percentage: higher,
+          rateBandTaxType: 2,
+          year: selectedYear.$y,
+        },
+        {
+          rateBand: 4,
+          percentage: additional,
+          rateBandTaxType: 2,
+          year: selectedYear.$y,
+        },
+      ];
+    } else {
+      payLoad = [
+        {
+          rateBand: 1,
+          percentage: starter,
+          rateBandTaxType: 3,
+          year: selectedYear.$y,
+        },
+        {
+          rateBand: 2,
+          percentage: base,
+          rateBandTaxType: 3,
+          year: selectedYear.$y,
+        },
+        {
+          rateBand: 3,
+          percentage: higher,
+          rateBandTaxType: 3,
+          year: selectedYear.$y,
+        },
+        {
+          rateBand: 4,
+          percentage: additional,
+          rateBandTaxType: 3,
+          year: selectedYear.$y,
+        },
+      ];
     }
 
     try {
@@ -193,6 +225,13 @@ export default function RateBand() {
     fetchData(selectedYear.$y, type);
     console.log("type", type);
   };
+
+  React.useEffect(() => {
+    getType();
+    if(selectedYear.$y !== null && incomeType !== null){
+    fetchData(selectedYear.$y,incomeType)
+    }
+  }, [selectedYear.$y,incomeType]);
 
   const axiosPrivate = useAxiosPrivate();
 
@@ -253,23 +292,25 @@ export default function RateBand() {
                         <Select
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
-                          value={incomeType || ""}
+                          value={incomeType}
                           label="Income Type"
                           onChange={(e) => {
                             setIncomeType(e.target.value);
                             handleSubmit(e.target.value);
                           }}
                         >
-                          <MenuItem value={1}>Saving</MenuItem>
-                          <MenuItem value={2}>Divident</MenuItem>
-                          <MenuItem value={3}>Capital gain</MenuItem>
+                          {" "}
+                          <MenuItem value={1}>Non Saving</MenuItem>
+                          <MenuItem value={2}>Saving</MenuItem>
+                          <MenuItem value={3}>Divident</MenuItem>
+                          <MenuItem value={4}>Capital gain</MenuItem>
                         </Select>
                       </FormControl>
                     </div>
                   </ListItem>
 
                   <div>
-                    {incomeType === 3 ? (
+                    {incomeType === 4 ? (
                       <Card sx={{ width: "60ch", margin: "4ch" }}>
                         {!loading && (
                           <>
