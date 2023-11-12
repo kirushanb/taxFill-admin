@@ -76,7 +76,7 @@ export default function PackageList() {
                     value={selectedYear || ""}
                     onChange={handleChange}
                     minDate={new Date(0, 0, 1)}
-                    maxDate={new Date(currentYear - 1, 11, 31)}
+                    maxDate={new Date(currentYear + 1, 11, 31)}
                     renderInput={(params) => <TextField {...params} />}
                   />
                 </ListItem>
