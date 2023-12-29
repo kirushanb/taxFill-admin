@@ -120,9 +120,9 @@ const CalculateTax = () => {
     return [
       ...list["personalAllowanceDeductions"].map(n=>{
         return({...n,
-          income: parseFloat(income).toFixed(2),
-          deductionAndAllowance: parseFloat(deductionAndAllowance).toFixed(2),
-          taxableAmount: parseFloat(taxableAmount).toFixed(2),
+          income: parseFloat(n.income).toFixed(2),
+          deductionAndAllowance: parseFloat(n.deductionAndAllowance).toFixed(2),
+          taxableAmount: parseFloat(n.taxableAmount).toFixed(2),
         })
       }),
       {
@@ -149,26 +149,26 @@ const CalculateTax = () => {
 
     const totalDue =
       parseFloat(list["rateBands"][0]["basicRateBand"]) *
-        (parseInt(list["rateBands"][0]["basicRateBandPercentage"]) / 100) +
+        (parseFloat(list["rateBands"][0]["basicRateBandPercentage"]) / 100) +
       parseFloat(list["rateBands"][1]["basicRateBand"]) *
-        (parseInt(list["rateBands"][1]["basicRateBandPercentage"]) / 100) +
+        (parseFloat(list["rateBands"][1]["basicRateBandPercentage"]) / 100) +
       parseFloat(list["rateBands"][2]["basicRateBand"]) *
-        (parseInt(list["rateBands"][2]["basicRateBandPercentage"]) / 100) +
+        (parseFloat(list["rateBands"][2]["basicRateBandPercentage"]) / 100) +
       (parseFloat(list["rateBands"][0]["higherRateBand"]) *
-        (parseInt(list["rateBands"][0]["higherRateBandPercentage"]) / 100) +
+        (parseFloat(list["rateBands"][0]["higherRateBandPercentage"]) / 100) +
         parseFloat(list["rateBands"][1]["higherRateBand"]) *
-          (parseInt(list["rateBands"][1]["higherRateBandPercentage"]) / 100) +
+          (parseFloat(list["rateBands"][1]["higherRateBandPercentage"]) / 100) +
         parseFloat(list["rateBands"][2]["higherRateBand"]) *
-          (parseInt(list["rateBands"][2]["higherRateBandPercentage"]) / 100)) +
+          (parseFloat(list["rateBands"][2]["higherRateBandPercentage"]) / 100)) +
       (parseFloat(list["rateBands"][0]["additionalRateBand"]) *
-        (parseInt(list["rateBands"][0]["additionalRateBandPercentage"]) / 100) +
+        (parseFloat(list["rateBands"][0]["additionalRateBandPercentage"]) / 100) +
         parseFloat(list["rateBands"][1]["additionalRateBand"]) *
-          (parseInt(list["rateBands"][1]["additionalRateBandPercentage"]) /
+          (parseFloat(list["rateBands"][1]["additionalRateBandPercentage"]) /
             100) +
         parseFloat(list["rateBands"][2]["additionalRateBand"]) *
-          (parseInt(list["rateBands"][2]["additionalRateBandPercentage"]) /
+          (parseFloat(list["rateBands"][2]["additionalRateBandPercentage"]) /
             100));
-    return [
+    var val= [
       {
         description: "Non savings income",
         value1: [
@@ -182,14 +182,14 @@ const CalculateTax = () => {
             value1: `${list["rateBands"][0]["basicRateBand"]} @ ${list["rateBands"][0]["basicRateBandPercentage"]}% =`,
             value2:
             parseFloat(parseFloat(list["rateBands"][0]["basicRateBand"]) *
-              (parseInt(list["rateBands"][0]["basicRateBandPercentage"]) / 100)).toFixed(2),
+              (parseFloat(list["rateBands"][0]["basicRateBandPercentage"]) / 100)).toFixed(2),
           },
           {
             description: "Higher",
             value1: `${list["rateBands"][0]["higherRateBand"]} @ ${list["rateBands"][0]["higherRateBandPercentage"]}% =`,
             value2:
             parseFloat(parseFloat(list["rateBands"][0]["higherRateBand"]) *
-              (parseInt(list["rateBands"][0]["higherRateBandPercentage"]) /
+              (parseFloat(list["rateBands"][0]["higherRateBandPercentage"]) /
                 100)).toFixed(2),
           },
           {
@@ -197,7 +197,7 @@ const CalculateTax = () => {
             value1: `${list["rateBands"][0]["additionalRateBand"]} @ ${list["rateBands"][0]["additionalRateBandPercentage"]}% =`,
             value2:
             parseFloat(parseFloat(list["rateBands"][0]["additionalRateBand"]) *
-              (parseInt(list["rateBands"][0]["additionalRateBandPercentage"]) /
+              (parseFloat(list["rateBands"][0]["additionalRateBandPercentage"]) /
                 100)).toFixed(2),
           },
         ],
@@ -215,14 +215,14 @@ const CalculateTax = () => {
             value1: `${list["rateBands"][1]["basicRateBand"]} @ ${list["rateBands"][1]["basicRateBandPercentage"]}% =`,
             value2:
             parseFloat(parseFloat(list["rateBands"][1]["basicRateBand"]) *
-              (parseInt(list["rateBands"][1]["basicRateBandPercentage"]) / 100)).toFixed(2),
+              (parseFloat(list["rateBands"][1]["basicRateBandPercentage"]) / 100)).toFixed(2),
           },
           {
             description: "Higher",
             value1: `${list["rateBands"][1]["higherRateBand"]} @ ${list["rateBands"][1]["higherRateBandPercentage"]}% =`,
             value2:
             parseFloat(parseFloat(list["rateBands"][1]["higherRateBand"]) *
-              (parseInt(list["rateBands"][1]["higherRateBandPercentage"]) /
+              (parseFloat(list["rateBands"][1]["higherRateBandPercentage"]) /
                 100)).toFixed(2),
           },
           {
@@ -230,7 +230,7 @@ const CalculateTax = () => {
             value1: `${list["rateBands"][1]["additionalRateBand"]} @ ${list["rateBands"][1]["additionalRateBandPercentage"]}% =`,
             value2:
             parseFloat(parseFloat(list["rateBands"][1]["additionalRateBand"]) *
-              (parseInt(list["rateBands"][1]["additionalRateBandPercentage"]) /
+              (parseFloat(list["rateBands"][1]["additionalRateBandPercentage"]) /
                 100)).toFixed(2),
           },
         ],
@@ -248,14 +248,14 @@ const CalculateTax = () => {
             value1: `${list["rateBands"][2]["basicRateBand"]} @ ${list["rateBands"][2]["basicRateBandPercentage"]}% =`,
             value2:
             parseFloat(parseFloat(list["rateBands"][2]["basicRateBand"]) *
-              (parseInt(list["rateBands"][2]["basicRateBandPercentage"]) / 100)).toFixed,
+              (parseFloat(list["rateBands"][2]["basicRateBandPercentage"]) / 100)).toFixed(2),
           },
           {
             description: "Higher",
             value1: `${list["rateBands"][2]["higherRateBand"]} @ ${list["rateBands"][2]["higherRateBandPercentage"]}% =`,
             value2:
             parseFloat(parseFloat(list["rateBands"][2]["higherRateBand"]) *
-              (parseInt(list["rateBands"][2]["higherRateBandPercentage"]) /
+              (parseFloat(list["rateBands"][2]["higherRateBandPercentage"]) /
                 100)).toFixed(2),
           },
           {
@@ -263,7 +263,7 @@ const CalculateTax = () => {
             value1: `${list["rateBands"][2]["additionalRateBand"]} @ ${list["rateBands"][2]["additionalRateBandPercentage"]}% =`,
             value2:
             parseFloat(parseFloat(list["rateBands"][2]["additionalRateBand"]) *
-              (parseInt(list["rateBands"][2]["additionalRateBandPercentage"]) /
+              (parseFloat(list["rateBands"][2]["additionalRateBandPercentage"]) /
                 100)).toFixed(2),
           },
         ],
@@ -279,6 +279,8 @@ const CalculateTax = () => {
         ],
       },
     ];
+    debugger;
+    return val;
   };
 
   const getRentalIncomeTaxAdjustment = () => {
@@ -300,7 +302,7 @@ const CalculateTax = () => {
         parseFloat(parseFloat(
             list["rentalIncomeTaxAdjustment"]["reliefForFinancialCost"]
           ) *
-          (parseInt(
+          (parseFloat(
             list["rentalIncomeTaxAdjustment"][
               "reliefForFinancialCostCalculationPercentage"
             ]
@@ -315,7 +317,7 @@ const CalculateTax = () => {
         parseFloat(parseFloat(
             list["rentalIncomeTaxAdjustment"]["reliefForFinancialCost"]
           ) *
-          (parseInt(
+          (parseFloat(
             list["rentalIncomeTaxAdjustment"][
               "reliefForFinancialCostCalculationPercentage"
             ]
@@ -416,7 +418,7 @@ const CalculateTax = () => {
         parseFloat(parseFloat(
             list["nonUKResidentialPropertyCapitalGain"]["capitalGainsChargable"]
           ) *
-          (parseInt(list["nonUKResidentialPropertyCapitalGain"]["percentage"]) /
+          (parseFloat(list["nonUKResidentialPropertyCapitalGain"]["percentage"]) /
             100)).toFixed(2),
       },
       {
@@ -426,7 +428,7 @@ const CalculateTax = () => {
         parseFloat(parseFloat(
             list["nonUKResidentialPropertyCapitalGain"]["capitalGainsChargable"]
           ) *
-          (parseInt(list["nonUKResidentialPropertyCapitalGain"]["percentage"]) /
+          (parseFloat(list["nonUKResidentialPropertyCapitalGain"]["percentage"]) /
             100)).toFixed(2),
       },
       {
@@ -436,7 +438,7 @@ const CalculateTax = () => {
         parseFloat(parseFloat(
             list["nonUKResidentialPropertyCapitalGain"]["capitalGainsChargable"]
           ) *
-          (parseInt(list["nonUKResidentialPropertyCapitalGain"]["percentage"]) /
+          (parseFloat(list["nonUKResidentialPropertyCapitalGain"]["percentage"]) /
             100)).toFixed(2),
       },
       {
@@ -471,7 +473,7 @@ const CalculateTax = () => {
         parseFloat(parseFloat(
             list["ukResidentialPropertyCapitalGain"]["basicRateBand"]
           ) *
-          (parseInt(
+          (parseFloat(
             list["ukResidentialPropertyCapitalGain"]["basicRateBandPercentage"]
           ) /
             100)).toFixed(2),
@@ -483,7 +485,7 @@ const CalculateTax = () => {
         parseFloat(parseFloat(
             list["ukResidentialPropertyCapitalGain"]["higherRateBand"]
           ) *
-          (parseInt(
+          (parseFloat(
             list["ukResidentialPropertyCapitalGain"]["higherRateBandPercentage"]
           ) /
             100)).toFixed(2),
@@ -495,7 +497,7 @@ const CalculateTax = () => {
         parseFloat(parseFloat(
             list["ukResidentialPropertyCapitalGain"]["basicRateBand"]
           ) *
-            (parseInt(
+            (parseFloat(
               list["ukResidentialPropertyCapitalGain"][
                 "basicRateBandPercentage"
               ]
@@ -504,7 +506,7 @@ const CalculateTax = () => {
           parseFloat(
             list["ukResidentialPropertyCapitalGain"]["higherRateBand"]
           ) *
-            (parseInt(
+            (parseFloat(
               list["ukResidentialPropertyCapitalGain"][
                 "higherRateBandPercentage"
               ]
@@ -1064,6 +1066,44 @@ const CalculateTax = () => {
                 </TableContainer>
               </div>
             )}
+               {getTaxPaidAtSource().length > 0 && (
+              <div style={{ margin: "1rem", marginTop: "2rem" }}>
+                <p className="title">Deduct tax paid etc</p>
+                <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Description</TableCell>
+                        <TableCell align="right">£</TableCell>
+                        <TableCell align="right">£</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {getTaxPaidAtSource()?.map((row, i) => {
+                        return (
+                          <TableRow
+                            key={row.name}
+                            sx={{
+                              "&:last-child td, &:last-child th": { border: 0 },
+                              // "&:nth-last-child(2) td": {
+                              //   borderBottom: "2px solid black",
+                              // },
+                              // "&:last-child th": { fontWeight: "bold" },
+                            }}
+                          >
+                            <TableCell component="th" scope="row">
+                              {row.description}
+                            </TableCell>
+                            <TableCell align="right">{row.value1}</TableCell>
+                            <TableCell align="right">{row.value2}</TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </div>
+            )}
             {getClassNIC().length > 0 && (
               <div style={{ margin: "1rem", marginTop: "2rem" }}>
                 <p className="title">Calculate Tax Due</p>
@@ -1104,44 +1144,7 @@ const CalculateTax = () => {
                 </TableContainer>
               </div>
             )}
-            {getTaxPaidAtSource().length > 0 && (
-              <div style={{ margin: "1rem", marginTop: "2rem" }}>
-                <p className="title">Deduct tax paid etc</p>
-                <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Description</TableCell>
-                        <TableCell align="right">£</TableCell>
-                        <TableCell align="right">£</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {getTaxPaidAtSource()?.map((row, i) => {
-                        return (
-                          <TableRow
-                            key={row.name}
-                            sx={{
-                              "&:last-child td, &:last-child th": { border: 0 },
-                              // "&:nth-last-child(2) td": {
-                              //   borderBottom: "2px solid black",
-                              // },
-                              // "&:last-child th": { fontWeight: "bold" },
-                            }}
-                          >
-                            <TableCell component="th" scope="row">
-                              {row.description}
-                            </TableCell>
-                            <TableCell align="right">{row.value1}</TableCell>
-                            <TableCell align="right">{row.value2}</TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-            )}
+         
             {getNonUKResidentialPropertyCapitalGain().length > 0 && (
               <div style={{ margin: "1rem", marginTop: "2rem" }}>
                 <p className="title">
